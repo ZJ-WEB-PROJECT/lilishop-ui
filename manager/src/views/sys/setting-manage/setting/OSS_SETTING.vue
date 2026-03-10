@@ -11,6 +11,9 @@
         </RadioGroup>
       </FormItem>
       <!--      阿里云存储-->
+      <FormItem v-if="formValidate.type==='ALI_OSS'" key="aliyunCDNDomain" label="cdn加速域名" prop="aliyunCDNDomain">
+        <Input v-model="formValidate.aliyunCDNDomain"/>
+      </FormItem>
       <FormItem v-if="formValidate.type==='ALI_OSS'" key="aliyunOSSEndPoint" label="节点" prop="aliyunOSSEndPoint">
         <Input v-model="formValidate.aliyunOSSEndPoint"/>
       </FormItem>
@@ -95,6 +98,7 @@ export default {
         aliyunOSSAccessKeySecret: "",
         aliyunOSSBucketName: "",
         aliyunOSSEndPoint: "",
+        aliyunCDNDomain: "",
         m_endpoint: "",
         m_accessKey: "",
         m_secretKey: "",
