@@ -447,7 +447,7 @@ export default {
       };
       // console.log("插入对话记录",'')
       // 插入对话记录
-      this.$store.commit("PUSH_DIALOGUE", insterChat);
+      // this.$store.commit("PUSH_DIALOGUE", insterChat);
       // 获取聊天面板元素节点
       let el = document.getElementById("lumenChatPanel");
 

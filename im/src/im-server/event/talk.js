@@ -84,7 +84,7 @@ class Talk extends Base {
    * @returns
    */
   getFloatType () {
-    let userId = this.resource.userId;
+    let userId = this.resource.fromUser;
 
     if (userId == 0) return "center";
 

@@ -61,7 +61,8 @@ export default {
     // 推送对话记录
     PUSH_DIALOGUE (state, record) {
       record = {...record,webSocketStatus:state.webSocketWithOut}
-      console.log("推送对话",)
+      console.log("推送对话")
+      // record.float = 'right';
       state.records.push(record);
     },
 
