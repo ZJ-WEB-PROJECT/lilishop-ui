@@ -406,7 +406,6 @@ export default {
     addMemberSubmit() {
       this.$refs.addMemberForm.validate((valid) => {
         if (valid) {
-          console.log(this.addMemberForm)
           API_Circle.addPost(this.addMemberForm).then((res) => {
             if (res.result) {
               this.$refs.addMemberForm.resetFields();

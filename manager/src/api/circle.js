@@ -18,7 +18,7 @@ export const delPost = (id) => {
 
 // 添加
 export const addPost = (data) => {
-  return postRequest("/circle/post/add", data);
+  return postRequest("/circle/post/create", data);
 };
 
 //   获取评论
