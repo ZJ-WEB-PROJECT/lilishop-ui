@@ -3,7 +3,6 @@ import config from "@/config/config";
 import { getToken, removeAll } from "@/utils/auth";
 
 import { Notification, MessageBox } from "element-ui";
-import qs from "qs";
 
 // 创建 axios 实例
 const request = axios.create({
@@ -115,10 +114,11 @@ export const get = (url, data = {}, options = {}) => {
  * @returns {Promise<any>}
  */
 export const post = (url, data = {}, options = {}) => {
+  const encoded = new URLSearchParams(data).toString();
   return request({
     url,
     method: "post",
-    data: qs.stringify(data),
+    data: encoded,
     ...options,
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
   });

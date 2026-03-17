@@ -223,7 +223,7 @@ export default {
           v.forEach(e => {
             let item = {
               status: "finished",
-              ...e
+              url: e
             };
             this.uploadList.push(item);
           });

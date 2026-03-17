@@ -1,5 +1,4 @@
 import 'core-js/stable'
-import 'regenerator-runtime/runtime'
 
 // 引入 Vue 和应用程序组件
 import Vue from 'vue'
