@@ -22,8 +22,8 @@ jobs:
         uses: actions/setup-node@v6   # ← 升级到 v6
         with:
           node-version: '16.20.2'     # 你的项目用的是 node 16，保持不变
-          # cache: 'npm'              # 可选：如果想自动缓存 node_modules，建议加这一行
-          # cache-dependency-path: 'seller/package-lock.json'
+          cache: 'npm'
+          cache-dependency-path: seller/package-lock.json
 
       - name: Install dependencies
         run: npm install --force
