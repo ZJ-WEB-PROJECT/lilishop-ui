@@ -45,7 +45,7 @@
       </div>
     </Modal>
     <!-- 修改模态框 -->
-    <Modal v-model="descFlag" :title="descTitle" @on-ok="handleSubmitModal" width="500">
+    <Modal v-model="descFlag" :title="descTitle" width="500" @on-ok="editMemberSubmit">
       <Form ref="form" :model="form" :rules="ruleValidate" :label-width="80">
         <FormItem label="帖子内容" prop="content" style="width: 90%;">
           <Input v-model="form.content" maxlength="11" placeholder="请输入帖子内容" />
@@ -61,14 +61,13 @@
         </FormItem>
         <div slot="footer">
           <Button @click="addFlag = false">取消</Button>
-          <Button type="primary" @click="addMemberSubmit">确定</Button>
+          <Button type="primary" @click="editMemberSubmit">确定</Button>
         </div>
-
       </Form>
     </Modal>
 
     <!-- 评论列表 -->
-    <Modal v-model="commentFlag" :title="commentTitle" @on-ok="handleSubmitModal" width="500">
+    <Modal v-model="commentFlag" :title="commentTitle" width="500">
       <div>
         <div class="comment-item" v-for="item in commentList" :key="item.id">
           <div>{{ item.createTime }}</div>
@@ -76,7 +75,6 @@
             <div>{{ item.createBy }}: <span>{{ item.content }}</span></div>
             <span class="comment-item-delete" @click="deleteComment(item)">删除</span>
           </div>
-
         </div>
       </div>
     </Modal>
@@ -330,6 +328,7 @@ export default {
     edit(v) {
       this.descTitle = `修改帖子`;
       this.descFlag = true;
+      v.images = v.images||[]
       this.form = v;
     },
     remove(v) {
@@ -374,7 +373,6 @@ export default {
     editPerm(val) {
       this.descTitle = `查看用户 ${val.username}`;
       this.descFlag = true;
-
       this.getMemberInfo(val.id);
     },
     addMember() {
@@ -417,6 +415,20 @@ export default {
         }
       });
     },
+    editMemberSubmit() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          API_Circle.editPost(this.form).then((res) => {
+            if (res.result) {
+              this.$refs.form.resetFields();
+              this.getData();
+              this.$Message.success("修改成功！");
+              this.descFlag = false;
+            }
+          });
+        }
+      });
+    },
     seeComment(v) {
       this.commentFlag = true;
       this.commentTitle = `评论列表`;
@@ -424,34 +436,6 @@ export default {
         this.commentList = res.result.records;
       })
 
-    },
-
-    // 提交修改数据
-    handleSubmitModal() {
-      const { nickName, sex, username, face, newPassword, id, regionId, region } = this.form;
-      let time = new Date(this.form.birthday);
-      let birthday = this.form.birthday === undefined ? '' :
-        time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate();
-      let submit = {
-        regionId,
-        region,
-        nickName,
-
-        sex,
-        birthday,
-        face,
-        id
-      };
-
-      if (newPassword) {
-        submit.password = this.md5(newPassword);
-      }
-      API_Member.updateMember(submit).then((res) => {
-        if (res.result) {
-          this.$Message.success("修改成功！");
-          this.getData();
-        }
-      });
     },
   },
   mounted() {

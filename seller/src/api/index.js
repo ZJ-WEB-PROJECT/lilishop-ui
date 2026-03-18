@@ -17,6 +17,10 @@ export const getAllCity = (params) => {
   return getRequest(commonUrl+'/common/common/region/allCity', params)
 }
 
+// 文件上传接口
+let uploadUrl = (process.env.NODE_ENV === 'development' ? BASE.API_DEV.common : BASE.API_PROD.common)
+export const uploadFile = uploadUrl+ "/common/common/upload/file";
+
 // 获取全部权限数据
 export const getCurrentPermissionList = (params) => {
   return getRequest("/menu/memberMenu", params);

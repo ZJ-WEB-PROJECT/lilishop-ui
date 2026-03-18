@@ -16,9 +16,15 @@ export const delPost = (id) => {
   return deleteRequest(`/circle/post/delete/${id}`);
 };
 
+
 // 添加
 export const addPost = (data) => {
   return postRequest("/circle/post/create", data);
+};
+
+// 编辑
+export const editPost = (data) => {
+  return putRequest(`/circle/post/${data.id}`, data);
 };
 
 //   获取评论
