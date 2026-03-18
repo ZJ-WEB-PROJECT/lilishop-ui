@@ -79,6 +79,10 @@ module.exports = {
         lessOptions: {
           javascriptEnabled: true
         }
+      },
+      sass: {
+        api: 'modern-compiler',  // 或 'modern'，强制用新 API，消除 legacy 警告
+        // silenceDeprecations: ['legacy-js-api'],  // 备选：临时静默（但不推荐长期）
       }
     }
   },
