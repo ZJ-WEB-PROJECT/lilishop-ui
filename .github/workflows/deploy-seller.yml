@@ -15,22 +15,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Debug - Check seller directory and lockfile
+      - name: Debug - Check files in seller/
         run: |
           pwd
-          ls -la seller/ || echo "目录 seller/ 不存在或为空"
+          ls -la seller/ || echo "seller/ 目录不存在"
           ls -la seller/package.json || echo "package.json 不存在"
-          ls -la seller/package-lock.json || echo "package-lock.json 不存在！"
+          ls -la seller/package-lock.json || echo "package-lock.json 不存在（npm ci 会失败）"
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '16.20.2'
-          package-manager-cache: false  # 关闭缓存，避免路径错误
+          package-manager-cache: false  # 临时关闭，锁文件提交后再开
 
       - name: Install dependencies
         working-directory: seller
-        run: npm ci  # 如果无 lockfile，改回 npm install --force
+        run: npm ci   # 等 lockfile 提交后用这个；现在如果还错，临时改 npm install --force
 
       - name: Build project
         working-directory: seller
