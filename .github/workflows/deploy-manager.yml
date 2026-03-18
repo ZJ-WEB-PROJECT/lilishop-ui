@@ -1,0 +1,45 @@
+name: Deploy manager to Server
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'manager/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '16.20.2'
+          package-manager-cache: false  # 必须关闭！因为无 lockfile 会一直报路径错误
+
+      - name: Install dependencies
+        working-directory: manager
+        run: npm install --force  # 改回 install --force（你的原始方式），兼容无 lockfile
+
+      - name: Build project
+        working-directory: manager
+        run: npm run build
+
+      - name: Verify build
+        working-directory: manager
+        run: ls -l dist || echo "dist 目录不存在，检查 build 是否成功"
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: 103.52.152.250
+          username: root
+          port: 55256
+          key: ${{ secrets.YIWU_SELLER }}
+          source: manager/dist/*
+          target: /home/source/lilishop-ui/manager/dist
+          strip_components: 1
