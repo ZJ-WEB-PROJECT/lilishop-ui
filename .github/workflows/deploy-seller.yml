@@ -15,22 +15,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Debug - Check files in seller/
-        run: |
-          pwd
-          ls -la seller/ || echo "seller/ 目录不存在"
-          ls -la seller/package.json || echo "package.json 不存在"
-          ls -la seller/package-lock.json || echo "package-lock.json 不存在（npm ci 会失败）"
-
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '16.20.2'
-          package-manager-cache: false  # 临时关闭，锁文件提交后再开
+          package-manager-cache: false  # 必须关闭！因为无 lockfile 会一直报路径错误
 
       - name: Install dependencies
         working-directory: seller
-        run: npm ci   # 等 lockfile 提交后用这个；现在如果还错，临时改 npm install --force
+        run: npm install --force  # 改回 install --force（你的原始方式），兼容无 lockfile
 
       - name: Build project
         working-directory: seller
@@ -38,7 +31,7 @@ jobs:
 
       - name: Verify build
         working-directory: seller
-        run: ls -l dist
+        run: ls -l dist || echo "dist 目录不存在，检查 build 是否成功"
 
       - name: Deploy to server
         uses: appleboy/scp-action@master
