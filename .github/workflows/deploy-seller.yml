@@ -1,0 +1,45 @@
+name: Deploy seller to Server
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'seller/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: seller/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('seller/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: cd seller && npm install --force
+
+      - name: Build project
+        run: cd seller && npm run build
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: 103.52.152.250
+          username: root
+          port: 22
+          key: ${{ secrets.YIWU_SELLER }}
+          source: seller/dist/*
+          target: /home/source/lilishop-ui/seller/dist
+          strip_components: 1
