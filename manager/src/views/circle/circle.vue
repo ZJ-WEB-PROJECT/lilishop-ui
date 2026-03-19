@@ -32,7 +32,7 @@
         <FormItem label="图片" prop="images" style="width: 90%">
           <upload-pic-thumb v-model="addMemberForm.images" :isView="true"></upload-pic-thumb>
         </FormItem>
-        <FormItem label="是否展示" prop="isHomeShow">
+        <FormItem label="首页展示" prop="isHomeShow">
           <RadioGroup button-style="solid" v-model="addMemberForm.isHomeShow">
             <Radio :label="1">是</Radio>
             <Radio :label="0">否</Radio>
@@ -53,7 +53,7 @@
         <FormItem label="图片" prop="images" style="width: 90%">
           <upload-pic-thumb v-model="form.images" :isView="true"></upload-pic-thumb>
         </FormItem>
-        <FormItem label="是否展示" prop="isHomeShow">
+        <FormItem label="首页展示" prop="isHomeShow">
           <RadioGroup button-style="solid" v-model="form.isHomeShow">
             <Radio :label="1">是</Radio>
             <Radio :label="0">否</Radio>
