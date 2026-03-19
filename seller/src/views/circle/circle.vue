@@ -150,10 +150,18 @@ export default {
           key: "images",
           align: "center",
           render: (h, params) => {
+            const images = params.row.images;
+            let imgSrc = "";
+            if (Array.isArray(images) && images.length > 0) {
+              const first = images[0];
+              imgSrc = typeof first === "string" ? first : (first && first.url) || "";
+            } else if (typeof images === "string") {
+              imgSrc = images;
+            }
             return h("img", {
               attrs: {
-                src: params.row.images || '',
-                alt: "头像"
+                src: imgSrc || require('@/assets/emptyImg.png'),
+                alt: ""
               },
               style: {
                 width: "30px",
@@ -324,7 +332,7 @@ export default {
     edit(v) {
       this.descTitle = `修改帖子`;
       this.descFlag = true;
-      v.images = v.images||[]
+      v.images = v.images || []
       this.form = v;
     },
     remove(v) {
@@ -401,7 +409,7 @@ export default {
       this.$refs.addMemberForm.validate((valid) => {
         if (valid) {
           API_Circle.addPost(this.addMemberForm).then((res) => {
-            if (res.result) {
+            if (res.code == 200) {
               this.$refs.addMemberForm.resetFields();
               this.getData();
               this.$Message.success("添加成功！");

@@ -19,7 +19,7 @@ export const delPost = (id) => {
 
 // 添加
 export const addPost = (data) => {
-  return postRequest("/circle/post/create", data);
+  return postRequest("/circle/post/create", data, { 'Content-Type': 'application/json' });
 };
 
 // 编辑
