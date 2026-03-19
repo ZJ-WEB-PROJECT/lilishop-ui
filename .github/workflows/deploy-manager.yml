@@ -41,5 +41,5 @@ jobs:
           port: 55256
           key: ${{ secrets.YIWU_SELLER }}
           source: manager/dist/*
-          target: /home/source/lilishop-ui/manager/dist
+          target: /home/source/lilishop-ui/manager
           strip_components: 1
