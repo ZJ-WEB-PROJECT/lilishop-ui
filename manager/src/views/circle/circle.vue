@@ -161,6 +161,7 @@ export default {
             } else if (typeof images === "string") {
               imgSrc = images;
             }
+
             return h("img", {
               attrs: {
                 src: imgSrc || require('@/assets/emptyImg.png'),
