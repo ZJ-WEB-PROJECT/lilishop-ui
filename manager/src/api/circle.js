@@ -24,7 +24,7 @@ export const addPost = (data) => {
 
 // 编辑
 export const editPost = (data) => {
-  return putRequest(`/circle/post/${data.id}`, data);
+  return putRequest(`/circle/post/${data.id}`, data, { 'Content-Type': 'application/json' });
 };
 
 //   获取评论
