@@ -403,7 +403,27 @@ export default {
       API_Circle.getPostList(this.searchForm).then((res) => {
         if (res.result.records) {
           this.loading = false;
-          this.init(res.result.records);
+          const processedRecords = res.result.records.map(item => {
+            let imagesArray = [];
+            if (typeof item.images === 'string' && item.images.trim() !== '') {
+              try {
+                imagesArray = JSON.parse(item.images);
+                // 確保是陣列
+                if (!Array.isArray(imagesArray)) {
+                  imagesArray = [];
+                }
+              } catch (e) {
+                console.warn(`圖片JSON解析失敗 (id: ${item.id}):`, item.images, e);
+                imagesArray = [];
+              }
+            }
+
+            return {
+              ...item,
+              images: imagesArray   // 替換成真正的陣列
+            };
+          });
+          this.init(processedRecords);
           this.total = res.result.total;
         }
       });
