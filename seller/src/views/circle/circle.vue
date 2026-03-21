@@ -4,7 +4,7 @@
       <Row @keydown.enter.native="handleSearch">
         <Form ref="searchForm" :model="searchForm" inline :label-width="70" class="search-form">
           <Form-item label="会员ID" prop="createBy">
-            <Input type="text" v-model="searchForm.id" placeholder="请输入会员ID" clearable style="width: 240px" />
+            <Input type="text" v-model="searchForm.userId" placeholder="请输入会员ID" clearable style="width: 240px" />
           </Form-item>
           <Button @click="handleSearch" class="search-btn" type="primary" icon="ios-search">搜索</Button>
         </Form>
@@ -142,8 +142,19 @@ export default {
       columns: [
         {
           title: "会员ID",
-          key: "createBy",
+          key: "userId",
           tooltip: true,
+        },
+        {
+          title: "首页显示",
+          key: "isHomeShow",
+          align: "center",
+          render: (h, params) => {
+            const isHomeShow = params.row.isHomeShow;
+            const text = isHomeShow === 1 ? "是" : "否";
+
+            return h("span", text);
+          }
         },
         {
           title: "图片",
@@ -400,7 +411,27 @@ export default {
       API_Circle.getPostList(this.searchForm).then((res) => {
         if (res.result.records) {
           this.loading = false;
-          this.init(res.result.records);
+          const processedRecords = res.result.records.map(item => {
+            let imagesArray = [];
+            if (typeof item.images === 'string' && item.images.trim() !== '') {
+              try {
+                imagesArray = JSON.parse(item.images);
+                // 確保是陣列
+                if (!Array.isArray(imagesArray)) {
+                  imagesArray = [];
+                }
+              } catch (e) {
+                console.warn(`圖片JSON解析失敗 (id: ${item.id}):`, item.images, e);
+                imagesArray = [];
+              }
+            }
+
+            return {
+              ...item,
+              images: imagesArray   // 替換成真正的陣列
+            };
+          });
+          this.init(processedRecords);
           this.total = res.result.total;
         }
       });

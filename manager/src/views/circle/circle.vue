@@ -3,8 +3,8 @@
     <Card>
       <Row @keydown.enter.native="handleSearch">
         <Form ref="searchForm" :model="searchForm" inline :label-width="70" class="search-form">
-          <Form-item label="会员ID" prop="createBy">
-            <Input type="text" v-model="searchForm.id" placeholder="请输入会员ID" clearable style="width: 240px" />
+          <Form-item label="会员ID" prop="userId">
+            <Input type="text" v-model="searchForm.userId" placeholder="请输入会员ID" clearable style="width: 240px" />
           </Form-item>
           <Button @click="handleSearch" class="search-btn" type="primary" icon="ios-search">搜索</Button>
         </Form>
@@ -145,8 +145,30 @@ export default {
       columns: [
         {
           title: "会员ID",
-          key: "createBy",
+          key: "userId",
           tooltip: true,
+        },
+        {
+          title: "用户类型",
+          key: "userType",
+          align: "center",
+          render: (h, params) => {
+            const type = params.row.userType;
+            const text = type === "ADMIN" ? "管理端" : "店铺端";
+
+            return h("span", text);
+          }
+        },
+        {
+          title: "首页显示",
+          key: "isHomeShow",
+          align: "center",
+          render: (h, params) => {
+            const isHomeShow = params.row.isHomeShow;
+            const text = isHomeShow === 1 ? "是" : "否";
+
+            return h("span", text);
+          }
         },
         {
           title: "图片",
