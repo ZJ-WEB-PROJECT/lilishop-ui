@@ -133,169 +133,169 @@
           </TabPane>
 
           <!-- 入驻信息 -->
-          <TabPane label="入驻信息" class="tab" name="entry">
-            <!-- 遮罩层  -->
-            <div v-if="isRead" class="mask">只读不可修改</div>
-            <Divider orientation="left">公司信息</Divider>
-            <div>
-              <FormItem label="公司名称" prop="companyName">
-                <Input v-model="shopForm.companyName" clearable style="width: 350px" />
-              </FormItem>
+<!--          <TabPane label="入驻信息" class="tab" name="entry">-->
+<!--            &lt;!&ndash; 遮罩层  &ndash;&gt;-->
+<!--            <div v-if="isRead" class="mask">只读不可修改</div>-->
+<!--            <Divider orientation="left">公司信息</Divider>-->
+<!--            <div>-->
+<!--              <FormItem label="公司名称" prop="companyName">-->
+<!--                <Input v-model="shopForm.companyName" clearable style="width: 350px" />-->
+<!--              </FormItem>-->
 
-              <FormItem label="公司电话" prop="companyPhone">
-                <Input v-model="shopForm.companyPhone" clearable style="width: 350px" />
-              </FormItem>
-              <FormItem label="公司所在地" prop="companyAddressIdPath">
-                <span>{{ shopForm.companyAddressPath }}</span>
-                <Button style="margin-left: 10px;" @click="handleClickAddress('companyAddressPath')">选择</Button>
-                <!-- <region
-                  style="width: 350px"
-                  @selected="selectedRegion"
-                  :addressId="address"
-                /> -->
-              </FormItem>
-              <FormItem label="公司详细地址" prop="companyAddress">
-                <Input v-model="shopForm.companyAddress" clearable style="width: 350px" />
-              </FormItem>
-              <FormItem label="员工总数" prop="employeeNum">
-                <InputNumber
-                  style="width: 150px"
-                  :min="1"
-                  :max="9999999"
-                  v-model="shopForm.employeeNum"
-                >
-                </InputNumber>
-              </FormItem>
-              <FormItem label="注册资金" prop="registeredCapital">
-                <InputNumber
-                  style="width: 150px"
-                  :min="1"
-                  :max="9999999"
-                  v-model="shopForm.registeredCapital"
-                >
-                </InputNumber>
-                <span style="margin-left: 10px">万</span>
-              </FormItem>
-              <FormItem label="联系人姓名" prop="linkName">
-                <Input v-model="shopForm.linkName" clearable style="width: 200px" />
-              </FormItem>
-              <FormItem label="联系人手机" prop="linkPhone">
-                <Input
-                  v-model="shopForm.linkPhone"
-                  maxlength="11"
-                  clearable
-                  style="width: 200px"
-                />
-              </FormItem>
-              <FormItem label="电子邮箱" prop="companyEmail">
-                <Input v-model="shopForm.companyEmail" clearable style="width: 200px" />
-              </FormItem>
+<!--              <FormItem label="公司电话" prop="companyPhone">-->
+<!--                <Input v-model="shopForm.companyPhone" clearable style="width: 350px" />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="公司所在地" prop="companyAddressIdPath">-->
+<!--                <span>{{ shopForm.companyAddressPath }}</span>-->
+<!--                <Button style="margin-left: 10px;" @click="handleClickAddress('companyAddressPath')">选择</Button>-->
+<!--                &lt;!&ndash; <region-->
+<!--                  style="width: 350px"-->
+<!--                  @selected="selectedRegion"-->
+<!--                  :addressId="address"-->
+<!--                /> &ndash;&gt;-->
+<!--              </FormItem>-->
+<!--              <FormItem label="公司详细地址" prop="companyAddress">-->
+<!--                <Input v-model="shopForm.companyAddress" clearable style="width: 350px" />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="员工总数" prop="employeeNum">-->
+<!--                <InputNumber-->
+<!--                  style="width: 150px"-->
+<!--                  :min="1"-->
+<!--                  :max="9999999"-->
+<!--                  v-model="shopForm.employeeNum"-->
+<!--                >-->
+<!--                </InputNumber>-->
+<!--              </FormItem>-->
+<!--              <FormItem label="注册资金" prop="registeredCapital">-->
+<!--                <InputNumber-->
+<!--                  style="width: 150px"-->
+<!--                  :min="1"-->
+<!--                  :max="9999999"-->
+<!--                  v-model="shopForm.registeredCapital"-->
+<!--                >-->
+<!--                </InputNumber>-->
+<!--                <span style="margin-left: 10px">万</span>-->
+<!--              </FormItem>-->
+<!--              <FormItem label="联系人姓名" prop="linkName">-->
+<!--                <Input v-model="shopForm.linkName" clearable style="width: 200px" />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="联系人手机" prop="linkPhone">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.linkPhone"-->
+<!--                  maxlength="11"-->
+<!--                  clearable-->
+<!--                  style="width: 200px"-->
+<!--                />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="电子邮箱" prop="companyEmail">-->
+<!--                <Input v-model="shopForm.companyEmail" clearable style="width: 200px" />-->
+<!--              </FormItem>-->
 
-              <Divider orientation="left">营业执照信息</Divider>
+<!--              <Divider orientation="left">营业执照信息</Divider>-->
 
-              <FormItem label="营业执照号" prop="licenseNum">
-                <Input v-model="shopForm.licenseNum" clearable style="width: 200px" />
-              </FormItem>
+<!--              <FormItem label="营业执照号" prop="licenseNum">-->
+<!--                <Input v-model="shopForm.licenseNum" clearable style="width: 200px" />-->
+<!--              </FormItem>-->
 
-              <FormItem label="法定经营范围" prop="scope">
-                <Input v-model="shopForm.scope" clearable style="width: 200px" />
-              </FormItem>
+<!--              <FormItem label="法定经营范围" prop="scope">-->
+<!--                <Input v-model="shopForm.scope" clearable style="width: 200px" />-->
+<!--              </FormItem>-->
 
-              <FormItem label="营业执照电子版" prop="licencePhoto">
-                <Avatar
-                  style="height: 100px; width: 100px"
-                  v-if="shopForm.licencePhoto"
-                  shape="square"
-                  icon="ios-person"
-                  size="default"
-                  :src="shopForm.licencePhoto"
-                />
-                <div>
-                  <Button @click="handleCLickImg('licencePhoto')" type="primary"
-                  >选择图片</Button
-                  >
-                </div>
-              </FormItem>
-              <Divider orientation="left">法人信息</Divider>
+<!--              <FormItem label="营业执照电子版" prop="licencePhoto">-->
+<!--                <Avatar-->
+<!--                  style="height: 100px; width: 100px"-->
+<!--                  v-if="shopForm.licencePhoto"-->
+<!--                  shape="square"-->
+<!--                  icon="ios-person"-->
+<!--                  size="default"-->
+<!--                  :src="shopForm.licencePhoto"-->
+<!--                />-->
+<!--                <div>-->
+<!--                  <Button @click="handleCLickImg('licencePhoto')" type="primary"-->
+<!--                  >选择图片</Button-->
+<!--                  >-->
+<!--                </div>-->
+<!--              </FormItem>-->
+<!--              <Divider orientation="left">法人信息</Divider>-->
 
-              <FormItem label="法人姓名" prop="legalName">
-                <Input v-model="shopForm.legalName" clearable style="width: 200px" />
-              </FormItem>
-              <FormItem label="法人证件号" prop="legalId">
-                <Input v-model="shopForm.legalId" clearable style="width: 200px" />
-              </FormItem>
-              <FormItem label="法人身份证照片" prop="legalPhoto">
-                <Avatar
-                  class="legal-photo"
-                  shape="square"
-                  size="100"
-                  icon="md-add"
-                  @click.native="handleCLickImg('legalPhoto', 0)"
-                  :src="shopForm.legalPhoto[0]"
-                />
-                <Avatar
-                  class="ml_10 legal-photo"
-                  shape="square"
-                  size="100"
-                  icon="md-add"
-                  @click.native="handleCLickImg('legalPhoto', 1)"
-                  :src="shopForm.legalPhoto[1]"
-                />
-                <span>点击图片上传身份证正反面，要求身份证清晰，四角无缺漏</span>
-              </FormItem>
+<!--              <FormItem label="法人姓名" prop="legalName">-->
+<!--                <Input v-model="shopForm.legalName" clearable style="width: 200px" />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="法人证件号" prop="legalId">-->
+<!--                <Input v-model="shopForm.legalId" clearable style="width: 200px" />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="法人身份证照片" prop="legalPhoto">-->
+<!--                <Avatar-->
+<!--                  class="legal-photo"-->
+<!--                  shape="square"-->
+<!--                  size="100"-->
+<!--                  icon="md-add"-->
+<!--                  @click.native="handleCLickImg('legalPhoto', 0)"-->
+<!--                  :src="shopForm.legalPhoto[0]"-->
+<!--                />-->
+<!--                <Avatar-->
+<!--                  class="ml_10 legal-photo"-->
+<!--                  shape="square"-->
+<!--                  size="100"-->
+<!--                  icon="md-add"-->
+<!--                  @click.native="handleCLickImg('legalPhoto', 1)"-->
+<!--                  :src="shopForm.legalPhoto[1]"-->
+<!--                />-->
+<!--                <span>点击图片上传身份证正反面，要求身份证清晰，四角无缺漏</span>-->
+<!--              </FormItem>-->
 
-              <Divider orientation="left">结算银行信息</Divider>
-              <FormItem label="银行开户名" prop="settlementBankAccountName">
-                <Input
-                  v-model="shopForm.settlementBankAccountName"
-                  clearable
-                  style="width: 200px"
-                />
-              </FormItem>
-              <FormItem label="银行账号" prop="settlementBankAccountNum">
-                <Input
-                  v-model="shopForm.settlementBankAccountNum"
-                  clearable
-                  style="width: 200px"
-                />
-              </FormItem>
-              <FormItem label="银行支行名称" prop="settlementBankBranchName">
-                <Input
-                  v-model="shopForm.settlementBankBranchName"
-                  clearable
-                  style="width: 200px"
-                />
-              </FormItem>
-              <FormItem label="支行联行号" prop="settlementBankJointName">
-                <Input
-                  v-model="shopForm.settlementBankJointName"
-                  clearable
-                  style="width: 200px"
-                />
-              </FormItem>
+<!--              <Divider orientation="left">结算银行信息</Divider>-->
+<!--              <FormItem label="银行开户名" prop="settlementBankAccountName">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.settlementBankAccountName"-->
+<!--                  clearable-->
+<!--                  style="width: 200px"-->
+<!--                />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="银行账号" prop="settlementBankAccountNum">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.settlementBankAccountNum"-->
+<!--                  clearable-->
+<!--                  style="width: 200px"-->
+<!--                />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="银行支行名称" prop="settlementBankBranchName">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.settlementBankBranchName"-->
+<!--                  clearable-->
+<!--                  style="width: 200px"-->
+<!--                />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="支行联行号" prop="settlementBankJointName">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.settlementBankJointName"-->
+<!--                  clearable-->
+<!--                  style="width: 200px"-->
+<!--                />-->
+<!--              </FormItem>-->
 
-              <Spin fix v-if="loading"></Spin>
-            </div>
-          </TabPane>
-          <TabPane label="经营范围" class="tab" name="category">
-            <!-- 遮罩层  -->
-            <div v-if="isRead" class="mask">只读不可修改</div>
-            <FormItem label="经营类目" prop="goodsManagementCategory">
-              <div>
-                <Checkbox
-                  :indeterminate="indeterminate"
-                  :value="checkAll"
-                  @click.prevent.native="handleCheckAll"
-                  >全选
-                </Checkbox>
-              </div>
-              <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                <Checkbox v-for="(item, i) in categories" :key="i + 1" :label="item.id"
-                  >{{ item.name }}
-                </Checkbox>
-              </CheckboxGroup>
-            </FormItem>
-          </TabPane>
+<!--              <Spin fix v-if="loading"></Spin>-->
+<!--            </div>-->
+<!--          </TabPane>-->
+<!--          <TabPane label="经营范围" class="tab" name="category">-->
+<!--            &lt;!&ndash; 遮罩层  &ndash;&gt;-->
+<!--            <div v-if="isRead" class="mask">只读不可修改</div>-->
+<!--            <FormItem label="经营类目" prop="goodsManagementCategory">-->
+<!--              <div>-->
+<!--                <Checkbox-->
+<!--                  :indeterminate="indeterminate"-->
+<!--                  :value="checkAll"-->
+<!--                  @click.prevent.native="handleCheckAll"-->
+<!--                  >全选-->
+<!--                </Checkbox>-->
+<!--              </div>-->
+<!--              <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">-->
+<!--                <Checkbox v-for="(item, i) in categories" :key="i + 1" :label="item.id"-->
+<!--                  >{{ item.name }}-->
+<!--                </Checkbox>-->
+<!--              </CheckboxGroup>-->
+<!--            </FormItem>-->
+<!--          </TabPane>-->
 
           <!-- <TabPane label="配送信息" class="tab" name="send"> -->
             <!-- 遮罩层  -->
@@ -309,46 +309,46 @@
             </FormItem> -->
           <!-- </TabPane> -->
 
-          <TabPane label="结算信息" class="tab" name="settlement">
-            <Alert type="error"
-              >已添加<span class="theme_color">{{ settlementCycle.length }}</span
-              >个结算日，最多可添加5个结算日，当月不包含所设日期时，将会顺延到下一个结算日</Alert
-            >
-            <FormItem label="结算日期">
-              <Tag
-                v-for="item in settlementCycle"
-                :key="item"
-                :name="item"
-                closable
-                style="marrgin-left: 10px"
-                @on-close="removesettlementCycle"
-                >{{ item }}
-              </Tag>
-              <InputNumber
-                size="small"
-                :max="31"
-                :min="1"
-                v-model="day"
-                v-show="settlementShow"
-              ></InputNumber>
-              <Button
-                type="default"
-                @click="addsettlementCycle"
-                size="small"
-                v-if="addSettlementBtn && settlementCycle.length < 5"
-                style="margin-left: 8px"
-                >添加结算日期
-              </Button>
-              <Button
-                v-if="addSettlementConfirmBtn"
-                type="default"
-                @click="addsettlementCycleConfirm"
-                size="small"
-                style="margin-left: 8px"
-                >确认
-              </Button>
-            </FormItem>
-          </TabPane>
+<!--          <TabPane label="结算信息" class="tab" name="settlement">-->
+<!--            <Alert type="error"-->
+<!--              >已添加<span class="theme_color">{{ settlementCycle.length }}</span-->
+<!--              >个结算日，最多可添加5个结算日，当月不包含所设日期时，将会顺延到下一个结算日</Alert-->
+<!--            >-->
+<!--            <FormItem label="结算日期">-->
+<!--              <Tag-->
+<!--                v-for="item in settlementCycle"-->
+<!--                :key="item"-->
+<!--                :name="item"-->
+<!--                closable-->
+<!--                style="marrgin-left: 10px"-->
+<!--                @on-close="removesettlementCycle"-->
+<!--                >{{ item }}-->
+<!--              </Tag>-->
+<!--              <InputNumber-->
+<!--                size="small"-->
+<!--                :max="31"-->
+<!--                :min="1"-->
+<!--                v-model="day"-->
+<!--                v-show="settlementShow"-->
+<!--              ></InputNumber>-->
+<!--              <Button-->
+<!--                type="default"-->
+<!--                @click="addsettlementCycle"-->
+<!--                size="small"-->
+<!--                v-if="addSettlementBtn && settlementCycle.length < 5"-->
+<!--                style="margin-left: 8px"-->
+<!--                >添加结算日期-->
+<!--              </Button>-->
+<!--              <Button-->
+<!--                v-if="addSettlementConfirmBtn"-->
+<!--                type="default"-->
+<!--                @click="addsettlementCycleConfirm"-->
+<!--                size="small"-->
+<!--                style="margin-left: 8px"-->
+<!--                >确认-->
+<!--              </Button>-->
+<!--            </FormItem>-->
+<!--          </TabPane>-->
         </Form>
       </Tabs>
       <div align="center">
@@ -442,7 +442,8 @@ export default {
       addSettlementBtn: true, // 添加结算日按钮
       day: 1, //结算日
       tabName: "base", // tab栏name值
-      tabNameList: ["base", "entry", "category", "settlement"], // tab栏name值数组
+      // tabNameList: ["base", "entry", "category", "settlement"], // tab栏name值数组
+      tabNameList: ["base"], // tab栏name值数组
       shopValidate: {
         // 表单验证规则
         memberName: [{ required: true, message: "会员不能为空" }],
@@ -691,16 +692,16 @@ export default {
     save() {
       this.$refs.shopForm.validate((valid) => {
         //校验结算日是否已经确认完成
-        if (this.settlementShow) {
-          this.$Message.error("请确认当前所填结算日信息");
-          return;
-        }
+        // if (this.settlementShow) {
+        //   this.$Message.error("请确认当前所填结算日信息");
+        //   return;
+        // }
         //校验经营类目
-        if (this.checkAllGroup == "") {
-          this.$Message.error("请选择店铺经营类目");
-          this.tabName = "cagetory";
-          return;
-        }
+        // if (this.checkAllGroup == "") {
+        //   this.$Message.error("请选择店铺经营类目");
+        //   this.tabName = "cagetory";
+        //   return;
+        // }
         if (valid) {
           const params = JSON.parse(JSON.stringify(this.shopForm));
           //处理经营类目，结算日

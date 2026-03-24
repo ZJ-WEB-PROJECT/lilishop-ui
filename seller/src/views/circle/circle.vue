@@ -27,7 +27,11 @@
     <Modal v-model="addFlag" title="添加帖子">
       <Form ref="addMemberForm" :model="addMemberForm" :rules="addRule" :label-width="100">
         <FormItem label="帖子内容" prop="content" style="width: 90%;">
-          <Input v-model="addMemberForm.content" maxlength="11" placeholder="请输入帖子内容" />
+          <editor
+            ref="editor"
+            openXss
+            v-model="addMemberForm.content"
+          ></editor>
         </FormItem>
         <FormItem label="图片" prop="images" style="width: 90%">
           <upload-pic-thumb v-model="addMemberForm.images" :isView="true"></upload-pic-thumb>
@@ -48,7 +52,11 @@
     <Modal v-model="descFlag" :title="descTitle" width="500" @on-ok="editMemberSubmit">
       <Form ref="form" :model="form" :rules="ruleValidate" :label-width="80">
         <FormItem label="帖子内容" prop="content" style="width: 90%;">
-          <Input v-model="form.content" maxlength="11" placeholder="请输入帖子内容" />
+          <editor
+            ref="editor"
+            openXss
+            v-model="form.content"
+          ></editor>
         </FormItem>
         <FormItem label="图片" prop="images" style="width: 90%">
           <upload-pic-thumb v-model="form.images" :isView="true"></upload-pic-thumb>
@@ -85,9 +93,12 @@
 import * as API_Circle from "@/api/circle.js";
 import * as RegExp from "@/libs/RegExp.js";
 import uploadPicThumb from "@/components/upload-pic-thumb";
+import editor from "@/views/lili-components/editor/index.vue";
+
 export default {
   name: "circle",
   components: {
+    editor,
     uploadPicThumb,
   },
   data() {
