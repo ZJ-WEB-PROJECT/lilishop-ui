@@ -289,6 +289,16 @@ export function editGoods(goodsId, params) {
   });
 }
 
+// 获取模板店铺商品列表
+export const getTemplateGoodsListDataSeller = params => {
+  return getRequest("/goods/goods/template/list", params);
+};
+
+// 从模板复制商品
+export const copyTemplateGoodsSeller = templateGoodsId => {
+  return postRequest(`/goods/goods/copy-template/${templateGoodsId}`);
+};
+
 // 获取草稿商品分页列表
 export const getDraftGoodsListData = params => {
   return getRequest("/goods/draftGoods/page", params);

@@ -77,6 +77,7 @@
 
       <Row class="operation padding-row">
         <Button @click="addGoods" type="info">添加商品</Button>
+        <Button @click="openTemplateGoodsModal">从模板复制</Button>
         <Button @click="openImportGoods" >导入商品</Button>
         <Button @click="uppers" >批量上架</Button>
         <Button @click="lowers" >批量下架</Button>
@@ -189,6 +190,43 @@
         <Button type="text" @click="importModal = false">确定</Button>
       </div>
     </Modal>
+    <Modal
+      title="从模板复制商品"
+      v-model="templateGoodsModal"
+      :mask-closable="false"
+      :width="900"
+    >
+      <Row style="margin-bottom: 12px">
+        <Input
+          v-model="templateSearchForm.goodsName"
+          placeholder="请输入模板商品名称"
+          clearable
+          style="width: 260px; margin-right: 8px"
+          @on-enter="searchTemplateGoods"
+        />
+        <Button type="primary" @click="searchTemplateGoods">搜索</Button>
+      </Row>
+      <Table
+        :loading="templateGoodsLoading"
+        :columns="templateGoodsColumns"
+        :data="templateGoodsData"
+        border
+      />
+      <Row type="flex" justify="end" class="mt_10">
+        <Page
+          :current="templateSearchForm.pageNumber"
+          :total="templateGoodsTotal"
+          :page-size="templateSearchForm.pageSize"
+          @on-change="changeTemplateGoodsPage"
+          size="small"
+          show-total
+          show-elevator
+        />
+      </Row>
+      <div slot="footer">
+        <Button type="text" @click="templateGoodsModal = false">关闭</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -202,7 +240,9 @@ import {
   deleteGoods,
   batchShipTemplate,
   downLoadGoods,
-  getGoodsNumerData
+  getGoodsNumerData,
+  getTemplateGoodsListDataSeller,
+  copyTemplateGoodsSeller
 } from "@/api/goods";
 import { baseUrl } from "@/libs/axios.js";
 import * as API_Shop from "@/api/shops";
@@ -232,6 +272,17 @@ export default {
         pageSize: 20, // 页面大小
         sort: "create_time", // 默认排序字段
         order: "desc", // 默认排序方式
+      },
+      templateGoodsModal: false,
+      templateGoodsLoading: false,
+      templateGoodsTotal: 0,
+      templateGoodsData: [],
+      templateSearchForm: {
+        pageNumber: 1,
+        pageSize: 10,
+        sort: "create_time",
+        order: "desc",
+        goodsName: "",
       },
       stockList: [], // 库存列表
       form: {
@@ -493,6 +544,60 @@ export default {
           },
         },
       ],
+      templateGoodsColumns: [
+        {
+          title: "模板商品ID",
+          key: "id",
+          width: 220,
+          tooltip: true,
+        },
+        {
+          title: "商品名称",
+          key: "goodsName",
+          minWidth: 220,
+        },
+        {
+          title: "价格",
+          key: "price",
+          width: 120,
+          render: (h, params) => h("div", "￥" + (params.row.price || 0)),
+        },
+        {
+          title: "状态",
+          key: "marketEnable",
+          width: 120,
+          render: (h, params) => {
+            if (params.row.marketEnable === "UPPER") {
+              return h("Tag", { props: { color: "green" } }, "上架");
+            }
+            return h("Tag", { props: { color: "red" } }, "下架");
+          },
+        },
+        {
+          title: "操作",
+          key: "action",
+          width: 140,
+          align: "center",
+          render: (h, params) => {
+            return h(
+              "a",
+              {
+                style: {
+                  color: "#2d8cf0",
+                  cursor: "pointer",
+                  textDecoration: "none"
+                },
+                on: {
+                  click: () => {
+                    this.copyTemplateGoods(params.row.id, params.row.goodsName);
+                  },
+                },
+              },
+              "复制到本店"
+            );
+          },
+        },
+      ],
       updateStockColumns: [
         {
           title: "sku规格",
@@ -545,6 +650,51 @@ export default {
       // 初始化数据
       this.getDataList();
       this.getNumberData();
+    },
+    openTemplateGoodsModal() {
+      this.templateGoodsModal = true;
+      this.templateSearchForm.pageNumber = 1;
+      this.getTemplateGoodsList();
+    },
+    searchTemplateGoods() {
+      this.templateSearchForm.pageNumber = 1;
+      this.getTemplateGoodsList();
+    },
+    changeTemplateGoodsPage(page) {
+      this.templateSearchForm.pageNumber = page;
+      this.getTemplateGoodsList();
+    },
+    getTemplateGoodsList() {
+      this.templateGoodsLoading = true;
+      getTemplateGoodsListDataSeller(this.templateSearchForm).then((res) => {
+        this.templateGoodsLoading = false;
+        if (res.success) {
+          this.templateGoodsData = res.result.records || [];
+          this.templateGoodsTotal = res.result.total || 0;
+        }
+      }).catch(() => {
+        this.templateGoodsLoading = false;
+      });
+    },
+    copyTemplateGoods(templateGoodsId, goodsName) {
+      this.$Modal.confirm({
+        title: "确认复制",
+        content: `您确认将模板商品【${goodsName}】复制到当前店铺吗？`,
+        loading: true,
+        onOk: () => {
+          copyTemplateGoodsSeller(templateGoodsId).then((res) => {
+            this.$Modal.remove();
+            if (res.success) {
+              this.$Message.success("复制成功");
+              this.templateGoodsModal = false;
+              this.getDataList();
+              this.getNumberData();
+            }
+          }).catch(() => {
+            this.$Modal.remove();
+          });
+        },
+      });
     },
     // 添加商品
     addGoods() {
