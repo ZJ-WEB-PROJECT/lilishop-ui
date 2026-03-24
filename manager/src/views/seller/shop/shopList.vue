@@ -79,6 +79,12 @@ export default {
           align: "left",
         },
         {
+          title: "店铺账号",
+          key: "mobile",
+          minWidth: 120,
+          tooltip: true
+        },
+        {
           title: "会员名称",
           key: "memberName",
           minWidth: 130,
