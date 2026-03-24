@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import Cookies from "js-cookie";
 import firstStep from  './goodsOperationFirst'
 import secondStep from  './goodsOperationSec'
 import thirdStep from  './goodsOperationThird'
@@ -37,6 +38,22 @@ export default {
     };
   },
   methods: {
+    isTemplateStore() {
+      const cookieValue = Cookies.get("userInfoSeller");
+      if (!cookieValue) {
+        return false;
+      }
+      let userInfo = {};
+      try {
+        userInfo = JSON.parse(cookieValue);
+      } catch (e) {
+        return false;
+      }
+      const templateAccounts = ["template", "templete"];
+      const username = (userInfo.username || "").toLowerCase();
+      const storeName = (userInfo.storeName || "").toLowerCase();
+      return templateAccounts.includes(username) || templateAccounts.includes(storeName);
+    },
     // 选择商品分类回调
     getFirstData (item) {
       this.firstData = item;
@@ -44,6 +61,12 @@ export default {
     }
   },
   mounted() {
+    // 非模板店铺不允许走手工发布，统一引导到模板复制流程
+    if (!this.isTemplateStore() && this.$route.name === "goods-operation" && !this.$route.query.id && !this.$route.query.draftId && !this.$route.query.copyId) {
+      this.$Message.warning("当前店铺仅支持从模板商品库引用商品");
+      this.$router.replace({ name: "goods", query: { openTemplate: "1" } });
+      return;
+    }
     // 编辑商品、模板、复制商品
     if (this.$route.query.id || this.$route.query.draftId || this.$route.query.copyId) {
       this.activestep = 1;
