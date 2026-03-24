@@ -76,9 +76,9 @@
       </div>
 
       <Row class="operation padding-row">
-        <Button @click="addGoods" type="info">添加商品</Button>
+        <Button @click="addGoods" type="info">{{ isTemplateStore ? '添加商品' : '引用模板商品' }}</Button>
         <Button @click="openTemplateGoodsModal">从模板复制</Button>
-        <Button @click="openImportGoods" >导入商品</Button>
+        <Button v-if="isTemplateStore" @click="openImportGoods" >导入商品</Button>
         <Button @click="uppers" >批量上架</Button>
         <Button @click="lowers" >批量下架</Button>
         <Button @click="deleteAll" >批量删除</Button>
@@ -231,6 +231,7 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
 import {
   getGoodsListDataSeller,
   getGoodsSkuListDataSeller,
@@ -635,6 +636,23 @@ export default {
     };
   },
   computed: {
+    isTemplateStore() {
+      const cookieValue = Cookies.get("userInfoSeller");
+      if (!cookieValue) {
+        return false;
+      }
+      let userInfo = {};
+      try {
+        userInfo = JSON.parse(cookieValue);
+      } catch (e) {
+        return false;
+      }
+      const templateAccounts = ["template"];
+      console.log(userInfo);
+      const username = (userInfo.username || "").toLowerCase();
+      const storeName = (userInfo.storeName || "").toLowerCase();
+      return templateAccounts.includes(username) || templateAccounts.includes(storeName);
+    },
     goodsStatusWithCount() {
       return [
         {title: '全部', value: ''},
@@ -698,6 +716,10 @@ export default {
     },
     // 添加商品
     addGoods() {
+      if (!this.isTemplateStore) {
+        this.openTemplateGoodsModal();
+        return;
+      }
       this.$router.push({ name: "goods-operation" });
     },
     // 编辑商品
@@ -760,6 +782,11 @@ export default {
       }
     },
     openImportGoods(){
+      if (!this.isTemplateStore) {
+        this.$Message.warning("当前店铺仅支持从模板商品库引用商品");
+        this.openTemplateGoodsModal();
+        return;
+      }
       this.importModal = true
     },
     async exportGoods(){
@@ -1065,6 +1092,10 @@ export default {
   mounted() {
     this.init();
     this.accessToken.accessToken = this.getStore("accessToken");
+    if (this.$route.query && this.$route.query.openTemplate === "1" && !this.isTemplateStore) {
+      this.openTemplateGoodsModal();
+      this.$router.replace({ name: "goods", query: {} });
+    }
   },
 };
 </script>
