@@ -4,7 +4,7 @@ module.exports = {
   title:Cookie.get('siteName') || 'lilishop', //配置显示在浏览器标签的title、底部信息、部分信息展示的值
   icpCard: "", // icp证
   company: {
-    href: "https://guiguishop.top",
+    href: "https://aicomic.top",
     name: "北京宏业汇成科技有限公司",
   }, //公司信息
   icpMessage: "京ICP备20009696号-1", //icp备案
@@ -22,6 +22,6 @@ module.exports = {
   inputMaxLength:'140', //全局输入框默认最大输入长度字
 
 
-  PC_DOMAIN: "https://pc-b2b2c.guiguishop.top", // PC端域名
-  WAP_DOMAIN: "https://m-b2b2c.guiguishop.top", // WAP端域名
+  PC_DOMAIN: "https://pc-b2b2c.aicomic.top", // PC端域名
+  WAP_DOMAIN: "https://m-b2b2c.aicomic.top", // WAP端域名
 };
