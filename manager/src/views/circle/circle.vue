@@ -26,6 +26,15 @@
     <!-- 添加用户模态框 -->
     <Modal v-model="addFlag" title="添加帖子">
       <Form ref="addMemberForm" :model="addMemberForm" :rules="addRule" :label-width="100">
+        <FormItem label="选择店铺" prop="storeName">
+          <Input
+            v-model="addMemberForm.storeName"
+            readonly
+          />
+          <Button type="primary" :loading="submitLoading" @click="showSelector"
+          >选择店铺</Button
+          >
+        </FormItem>
         <FormItem label="帖子内容" prop="content" style="width: 90%;">
           <editor
             ref="editor"
@@ -51,6 +60,15 @@
     <!-- 修改模态框 -->
     <Modal v-model="descFlag" :title="descTitle" width="500" @on-ok="editMemberSubmit">
       <Form ref="form" :model="form" :rules="ruleValidate" :label-width="80">
+        <FormItem label="选择店铺" prop="storeName">
+          <Input
+            v-model="form.storeName"
+            readonly
+          />
+          <Button type="primary" :loading="submitLoading" @click="showSelector"
+          >选择店铺</Button
+          >
+        </FormItem>
         <FormItem label="帖子内容" prop="content" style="width: 90%;">
           <editor
             ref="editor"
@@ -85,6 +103,25 @@
         </div>
       </div>
     </Modal>
+    <Modal
+      @on-ok="confirmShop"
+      @on-cancel="
+        () => {
+          this.showShopSelect = false;
+        }
+      "
+      v-model="showShopSelect"
+      width="80%"
+    >
+      <shopTemplate
+        ref="shopRef"
+        :checked="true"
+        :selectedList="selectShopList"
+        getType="CIRCLE"
+        promotionStatus="START"
+        @selected="selectedShop"
+      />
+    </Modal>
   </div>
 </template>
 
@@ -95,6 +132,7 @@ import ossManage from "@/views/sys/oss-manage/ossManage";
 import * as RegExp from "@/libs/RegExp.js";
 import uploadPicThumb from "@/components/lili/upload-pic-thumb";
 import editor from "@/components/editor/index.vue";
+import shopTemplate from "@/views/seller/shop/shopList";
 
 export default {
   name: "circle",
@@ -103,15 +141,21 @@ export default {
     multipleMap,
     ossManage,
     uploadPicThumb,
+    shopTemplate,
   },
   data() {
     return {
+      submitLoading: false, // 添加或编辑提交状态
+      showShopSelect: false, //显示店铺选择框
+      selectShopList: [], //选择的店铺列表
       descTitle: "", // modal标题
       descFlag: false, //编辑查看框
       loading: true, // 表单加载状态
       addFlag: false, // modal显隐控制
 
       addMemberForm: {
+        storeId: "",
+        storeName: "",
         content: "",
         images: [],
         isHomeShow: 0,
@@ -147,6 +191,9 @@ export default {
 
       addRule: {
         // 验证规则
+        storeName: [
+          { required: true, message: "请选择店铺" }
+        ],
         content: [
           { required: true, message: "请输入帖子内容" },
         ],
@@ -160,15 +207,19 @@ export default {
           tooltip: true,
         },
         {
-          title: "用户类型",
+          title: "来源",
           key: "userType",
           align: "center",
           render: (h, params) => {
             const type = params.row.userType;
-            const text = type === "ADMIN" ? "管理端" : "店铺端";
+            const text = type === "MANAGER" ? "管理端" : "店铺端";
 
             return h("span", text);
           }
+        },
+        {
+          title: "店铺名称",
+          key: "storeName",
         },
         {
           title: "首页显示",
@@ -327,6 +378,26 @@ export default {
     },
   },
   methods: {
+    //显示店铺选择框
+    showSelector() {
+      this.showShopSelect = true;
+    },
+    confirmShop() {
+      // 调用子组件的确认选择方法
+      this.$refs.shopRef.confirmSelect();
+      // 关闭弹窗
+      this.showShopSelect = false;
+    },
+    /**
+     * 返回店铺
+     */
+    selectedShop(val) {
+      this.selectShopList = val;
+      this.addMemberForm.storeId = val.id
+      this.addMemberForm.storeName = val.storeName
+      this.form.storeId = val.id
+      this.form.storeName = val.storeName
+    },
     // 回调给父级
     callback(val, index) {
       this.selectMember.forEach(item => { item.___selected = false })
