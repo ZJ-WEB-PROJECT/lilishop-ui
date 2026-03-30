@@ -147,7 +147,7 @@ export default {
     return {
       submitLoading: false, // 添加或编辑提交状态
       showShopSelect: false, //显示店铺选择框
-      selectShopList: [], //选择的店铺列表
+      selectShopList: {}, //选择的店铺列表
       descTitle: "", // modal标题
       descFlag: false, //编辑查看框
       loading: true, // 表单加载状态
@@ -392,6 +392,7 @@ export default {
      * 返回店铺
      */
     selectedShop(val) {
+      console.log('返回店铺=', val)
       this.selectShopList = val;
       this.addMemberForm.storeId = val.id
       this.addMemberForm.storeName = val.storeName
@@ -402,8 +403,6 @@ export default {
     callback(val, index) {
       this.selectMember.forEach(item => { item.___selected = false })
       this.$set(val, "___selected", !val.___selected);
-      console.log(val.___selected);
-      console.log(this.selectMember);
       let findUser = this.selectMember.find((item) => {
         return item.id == val.id;
       });
