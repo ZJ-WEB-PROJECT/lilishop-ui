@@ -372,7 +372,6 @@ export default {
     },
     // 获取列表数据
     getDataList() {
-      console.log(this.searchForm)
       this.loading = true;
       // 带多条件搜索参数获取表单数据 请自行修改接口
       getShopListData(this.searchForm).then((res) => {

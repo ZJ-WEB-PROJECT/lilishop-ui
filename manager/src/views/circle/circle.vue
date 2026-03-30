@@ -135,7 +135,7 @@ import editor from "@/components/editor/index.vue";
 import shopTemplate from "@/views/seller/shop/shopList";
 
 export default {
-  name: "circle",
+  name: "CirclePost",
   components: {
     editor,
     multipleMap,
