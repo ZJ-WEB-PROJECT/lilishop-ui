@@ -24,7 +24,7 @@ export default {
   // 默认请求卖家相关的API
   BASE_SELLER: process.env.VUE_APP_SELLER || "",
   // 点击商品跳转到的地址
-  PC_URL: process.env.VUE_APP_PC_URL || "https://pc-b2b2c.guiguishop.top",
+  PC_URL: process.env.VUE_APP_PC_URL || "https://pc-b2b2c.aicomic.top",
   // 订单跳转商家订单页面
-  PC_STORE: process.env.VUE_APP_PC_STORE || 'https://store-b2b2c.guiguishop.top',
+  PC_STORE: process.env.VUE_APP_PC_STORE || 'https://store-b2b2c.aicomic.top',
 };

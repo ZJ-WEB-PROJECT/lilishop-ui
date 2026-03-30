@@ -62,6 +62,21 @@ export default {
           type: "IM_SETTING",
           name: "客服设置",
         },
+        //平台币设置
+        {
+          type: "COIN_SETTING",
+          name: "平台币设置",
+        },
+        //会员充值设置
+        {
+          type: "RECHARGE_AMOUNT_SETTING",
+          name: "会员充值设置",
+        },
+        //充值弹窗设置
+        {
+          type: "RECHARGE_POPUP_SETTING",
+          name: "充值弹窗设置",
+        },
       ],
       authLogin: [
         // 登录设置

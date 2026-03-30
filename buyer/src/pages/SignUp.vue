@@ -89,7 +89,7 @@
       </Row>
       <Row type="flex" justify="center" class="copyright">
         Copyright © {{year}} - Present
-        <a href="https://guiguishop.top" target="_blank" style="margin: 0 5px">{{config.title}}</a>
+        <a href="https://aicomic.top" target="_blank" style="margin: 0 5px">{{config.title}}</a>
         版权所有
       </Row>
     </div>

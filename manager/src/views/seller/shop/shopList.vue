@@ -39,7 +39,7 @@
       <Row class="operation padding-row">
         <Button @click="add" type="primary">添加</Button>
       </Row>
-      <Table :loading="loading" border :columns="columns" :data="data" ref="table"></Table>
+      <Table highlight-row :loading="loading" border :columns="columns" :data="data" ref="table" @on-current-change="handleSelect"></Table>
       <Row type="flex" justify="end" class="mt_10">
         <Page :current="searchForm.pageNumber" :total="total" :page-size="searchForm.pageSize" @on-change="changePage" @on-page-size-change="changePageSize" :page-size-opts="[20, 50, 100]"
           size="small" show-total show-elevator show-sizer></Page>
@@ -307,8 +307,37 @@ export default {
       selectedShop: false, //用于是否选择店铺
     };
   },
+  props: {
+    //店铺类型 查询参数
+    getType: {
+      type: String,
+      default: "",
+    },
+    //已选择店铺
+    selectedList: {
+      type: Object,
+      default: () => {
 
+      },
+    },
+  },
   methods: {
+    check() {
+      // 选中的店铺
+      this.$emit("selected", this.selectList);
+    },
+    /**
+     * 选择店铺
+     */
+    handleSelect(currentRow, oldCurrentRow) {
+      this.selectList = currentRow;
+    },
+    confirmSelect() {
+      // 点击确定才发射给父组件
+      if (this.getType === "CIRCLE") {
+        this.$emit("selected", this.selectList);
+      }
+    },
     // 回调给父级
     callback(val) {
       this.$emit("callback", val);
@@ -343,7 +372,6 @@ export default {
     },
     // 获取列表数据
     getDataList() {
-      console.log(this.searchForm)
       this.loading = true;
       // 带多条件搜索参数获取表单数据 请自行修改接口
       getShopListData(this.searchForm).then((res) => {
