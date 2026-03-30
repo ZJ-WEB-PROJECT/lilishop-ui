@@ -84,6 +84,16 @@
             </Radio>
           </RadioGroup>
         </FormItem>
+        <FormItem label="VIP" prop="isVip">
+          <RadioGroup type="button" button-style="solid" v-model="form.isVip">
+            <Radio :label="1">
+              <span>是</span>
+            </Radio>
+            <Radio :label="0">
+              <span>否</span>
+            </Radio>
+          </RadioGroup>
+        </FormItem>
         <FormItem label="修改密码" prop="password">
           <Input type="password" style="width: 220px" password v-model="form.newPassword" />
         </FormItem>
@@ -290,16 +300,28 @@ export default {
           key: "lastLoginDate",
           minWidth: 160,  // 减少宽度
         },
+        {
+          title: "是否VIP",
+          key: "isVip",
+          minWidth: 160,  // 减少宽度
+          render: (h, params) => {
+            return h(
+              "div",
+              {},
+              params.row.isVip === 1 ? "是" : "否"
+            );
+          },
+        },
 
         {
-          title: "积分数量",
+          title: "平台币数量",
           align: "left",
           minWidth: 120,  // 增加宽度
           render: (h, params) => {
             return h(
               "div",
               {},
-              params.row.point == void 0 ? "0" : params.row.point
+              params.row.coin == void 0 ? "0" : params.row.coin
             );
           },
         },
@@ -731,7 +753,7 @@ export default {
 
     // 提交修改数据
     handleSubmitModal() {
-      const { nickName, sex, username, face, newPassword,id,regionId,region } = this.form;
+      const { nickName, sex, username, face, newPassword,id,regionId,region, isVip } = this.form;
       let time = new Date(this.form.birthday);
       let birthday = this.form.birthday=== undefined?'':
         time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate();
@@ -739,7 +761,7 @@ export default {
         regionId,
         region,
         nickName,
-
+        isVip,
         sex,
         birthday,
         face,
