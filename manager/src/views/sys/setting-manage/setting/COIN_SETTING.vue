@@ -1,11 +1,15 @@
 <template>
   <div class="layout">
-    <Form ref="formValidate" :label-width="150" label-position="right" :model="formValidate" :rules="ruleValidate">
+    <Form ref="formValidate" :label-width="180" label-position="right" :model="formValidate" :rules="ruleValidate">
       <FormItem label="首次充值赠送平台币" prop="recharge">
         <Input type="number" v-model="formValidate.recharge">
           <span slot="append">平台币</span>
         </Input>
-
+      </FormItem>
+      <FormItem label="发送IM消息消费平台币" prop="consumer">
+        <Input type="number" v-model="formValidate.consumer">
+          <span slot="append">平台币</span>
+        </Input>
       </FormItem>
       <div class="label-btns">
         <Button type="primary" @click="submit('formValidate')">保存</Button>

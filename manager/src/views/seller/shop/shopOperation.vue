@@ -16,41 +16,74 @@
             <!-- 遮罩层  -->
             <div v-if="isRead" class="mask">只读不可修改</div>
             <div>
-              <FormItem label="会员名称" prop="memberName">
-                <div class="item">
-                  <Input disabled v-model="shopForm.memberName" />
-                  <Button type="default" @click="selectMember()" v-if="!$route.query.shopId"
-                    >选择会员</Button
-                  >
-                </div>
+<!--              <FormItem label="会员名称" prop="memberName">-->
+<!--                <div class="item">-->
+<!--                  <Input disabled v-model="shopForm.memberName" />-->
+<!--                  <Button type="default" @click="selectMember()" v-if="!$route.query.shopId"-->
+<!--                    >选择会员</Button-->
+<!--                  >-->
+<!--                </div>-->
+<!--              </FormItem>-->
+              <FormItem label="试穿员姓名" prop="legalName">
+                <Input v-model="shopForm.legalName" clearable style="width: 200px" />
+              </FormItem>
+              <FormItem label="试穿员证件号" prop="legalId">
+                <Input v-model="shopForm.legalId" clearable style="width: 200px" />
+              </FormItem>
+              <FormItem label="联系电话" prop="linkPhone">
+                <Input
+                  v-model="shopForm.linkPhone"
+                  maxlength="11"
+                  clearable
+                  style="width: 200px"
+                />
+              </FormItem>
+              <FormItem label="证件电子版" prop="legalPhoto">
+                <Avatar
+                  class="legal-photo"
+                  shape="square"
+                  size="100"
+                  icon="md-add"
+                  @click.native="handleCLickImg('legalPhoto', 0)"
+                  :src="shopForm.legalPhoto[0]"
+                />
+                <Avatar
+                  class="ml_10 legal-photo"
+                  shape="square"
+                  size="100"
+                  icon="md-add"
+                  @click.native="handleCLickImg('legalPhoto', 1)"
+                  :src="shopForm.legalPhoto[1]"
+                />
+                <span>点击图片上传身份证正反面，要求身份证清晰，四角无缺漏</span>
               </FormItem>
               <FormItem label="店铺名称" prop="storeName">
                 <Input v-model="shopForm.storeName" clearable style="width: 350px" />
               </FormItem>
 
-              <FormItem label="是否自营" prop="selfOperated">
-                <RadioGroup
-                  type="button"
-                  button-style="solid"
-                  v-model="shopForm.selfOperated"
-                >
-                  <Radio label="true">自营</Radio>
-                  <Radio label="false">非自营</Radio>
-                </RadioGroup>
-              </FormItem>
+<!--              <FormItem label="是否自营" prop="selfOperated">-->
+<!--                <RadioGroup-->
+<!--                  type="button"-->
+<!--                  button-style="solid"-->
+<!--                  v-model="shopForm.selfOperated"-->
+<!--                >-->
+<!--                  <Radio label="true">自营</Radio>-->
+<!--                  <Radio label="false">非自营</Radio>-->
+<!--                </RadioGroup>-->
+<!--              </FormItem>-->
 
-              <FormItem label="店铺所在地" prop="storeAddressPath">
-                <span>{{shopForm.storeAddressPath || '暂无地址'}}</span>
-                <Button style="margin-left: 10px;" type="default" @click="handleClickAddress('storeAddressPath')">选择</Button>
-              </FormItem>
+<!--              <FormItem label="店铺所在地" prop="storeAddressPath">-->
+<!--                <span>{{shopForm.storeAddressPath || '暂无地址'}}</span>-->
+<!--                <Button style="margin-left: 10px;" type="default" @click="handleClickAddress('storeAddressPath')">选择</Button>-->
+<!--              </FormItem>-->
 
-              <FormItem label="店铺详细地址" prop="storeAddressDetail">
-                <Input
-                  v-model="shopForm.storeAddressDetail"
-                  clearable
-                  style="width: 350px"
-                />
-              </FormItem>
+<!--              <FormItem label="店铺详细地址" prop="storeAddressDetail">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.storeAddressDetail"-->
+<!--                  clearable-->
+<!--                  style="width: 350px"-->
+<!--                />-->
+<!--              </FormItem>-->
 
               <!-- <FormItem label="店铺定位" prop="shopCenter">
                  <Button
@@ -93,34 +126,34 @@
                   style="width: 400px"
                 />
               </FormItem>
-              <br />
-              <Divider orientation="left">退货收件地址</Divider>
-              <FormItem label="收件人姓名">
-                <Input
-                  v-model="shopForm.salesConsigneeName"
-                  clearable
-                  style="width: 350px"
-                />
-              </FormItem>
-              <FormItem label="收件人手机">
-                <Input
-                  v-model="shopForm.salesConsigneeMobile"
-                  clearable
-                  maxlength="11"
-                  style="width: 350px"
-                />
-              </FormItem>
-              <FormItem label="地址信息">
-                {{ shopForm.salesConsigneeAddressPath || '暂无地址' }}
-                <Button style="margin-left: 10px;" type="default" @click="handleClickAddress('salesConsigneeAddressPath')">选择</Button>
-              </FormItem>
-              <FormItem label="详细地址">
-                <Input
-                  v-model="shopForm.salesConsigneeDetail"
-                  clearable
-                  style="width: 350px"
-                />
-              </FormItem>
+<!--              <br />-->
+<!--              <Divider orientation="left">退货收件地址</Divider>-->
+<!--              <FormItem label="收件人姓名">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.salesConsigneeName"-->
+<!--                  clearable-->
+<!--                  style="width: 350px"-->
+<!--                />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="收件人手机">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.salesConsigneeMobile"-->
+<!--                  clearable-->
+<!--                  maxlength="11"-->
+<!--                  style="width: 350px"-->
+<!--                />-->
+<!--              </FormItem>-->
+<!--              <FormItem label="地址信息">-->
+<!--                {{ shopForm.salesConsigneeAddressPath || '暂无地址' }}-->
+<!--                <Button style="margin-left: 10px;" type="default" @click="handleClickAddress('salesConsigneeAddressPath')">选择</Button>-->
+<!--              </FormItem>-->
+<!--              <FormItem label="详细地址">-->
+<!--                <Input-->
+<!--                  v-model="shopForm.salesConsigneeDetail"-->
+<!--                  clearable-->
+<!--                  style="width: 350px"-->
+<!--                />-->
+<!--              </FormItem>-->
               <!-- <Divider orientation="left">腾讯云智服</Divider>
               <FormItem label="唯一标识">
                 <Input v-model="shopForm.yzfSign" clearable style="width: 350px" />

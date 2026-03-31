@@ -148,3 +148,7 @@ export const increaseMemberWallet = (params) => {
 export const updateMemberPoint = (params) => {
   return putRequest(`/passport/member/updateMemberPoint`, params);
 };
+
+export const updateMemberCoin = (params) => {
+  return putRequest(`/passport/member/updateMemberCoin`, params);
+};

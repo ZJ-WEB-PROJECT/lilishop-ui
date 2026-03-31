@@ -137,6 +137,23 @@
         <Button type="primary" :loading="memberPointLoading" @click="submitMemberPoint">确定</Button>
       </div>
     </Modal>
+    <Modal v-model="memberCoinFlag" title="修改平台币" width="420">
+      <Form ref="memberCoinForm" :model="memberCoinForm" :rules="memberCoinRule" :label-width="90">
+        <FormItem label="类型" prop="type">
+          <RadioGroup type="button" button-style="solid" v-model="memberCoinForm.type">
+            <Radio label="INCREASE">增加</Radio>
+            <Radio label="REDUCE">减少</Radio>
+          </RadioGroup>
+        </FormItem>
+        <FormItem label="平台币" prop="coin">
+          <InputNumber v-model="memberCoinForm.coin" :min="1" :precision="0" style="width: 240px" />
+        </FormItem>
+      </Form>
+      <div slot="footer">
+        <Button @click="memberCoinFlag = false">取消</Button>
+        <Button type="primary" :loading="memberCoinLoading" @click="submitMemberCoin">确定</Button>
+      </div>
+    </Modal>
     <Modal width="1200px" v-model="picModelFlag">
       <ossManage @callback="callbackSelected" :isComponent="true" :initialize="picModelFlag" ref="ossManage" />
     </Modal>
@@ -218,6 +235,29 @@ export default {
             validator: (rule, value, callback) => {
               if (typeof value !== "number" || value <= 0) {
                 callback(new Error("积分必须大于0"));
+                return;
+              }
+              callback();
+            },
+            trigger: "change",
+          },
+        ],
+      },
+      memberCoinFlag: false,
+      memberCoinLoading: false,
+      memberCoinForm: {
+        memberId: "",
+        coin: null,
+        type: "INCREASE",
+      },
+      memberCoinRule: {
+        type: [{ required: true, message: "请选择类型", trigger: "change" }],
+        coin: [
+          { required: true, type: "number", message: "请输入平台币", trigger: "change" },
+          {
+            validator: (rule, value, callback) => {
+              if (typeof value !== "number" || value <= 0) {
+                callback(new Error("平台币必须大于0"));
                 return;
               }
               callback();
@@ -326,6 +366,18 @@ export default {
           },
         },
         {
+          title: "积分数量",
+          align: "left",
+          minWidth: 120,  // 增加宽度
+          render: (h, params) => {
+            return h(
+              "div",
+              {},
+              params.row.point == void 0 ? "0" : params.row.point
+            );
+          },
+        },
+        {
           title: "余额",
           key: "memberWallet",
           width: 120,
@@ -419,6 +471,9 @@ export default {
                     if (name === "updatePoint") {
                       this.openMemberPoint(params.row);
                     }
+                    if (name === "updateCoin") {
+                      this.openMemberCoin(params.row);
+                    }
                   },
                 },
               },
@@ -478,6 +533,15 @@ export default {
                         },
                       },
                       "修改积分"
+                    ),
+                    h(
+                      "DropdownItem",
+                      {
+                        props: {
+                          name: "updateCoin",
+                        },
+                      },
+                      "修改平台币"
                     ),
                     h(
                       "DropdownItem",
@@ -715,6 +779,37 @@ export default {
           })
           .finally(() => {
             this.walletIncreaseLoading = false;
+          });
+      });
+    },
+    openMemberCoin(row) {
+      this.memberCoinLoading = false;
+      this.$set(this, "memberCoinForm", { memberId: row.id, coin: null, type: "INCREASE" });
+      this.memberCoinFlag = true;
+      this.$nextTick(() => {
+        this.$refs.memberCoinForm && this.$refs.memberCoinForm.resetFields();
+      });
+    },
+    submitMemberCoin() {
+      this.$refs.memberCoinForm.validate((valid) => {
+        if (!valid) return;
+        this.memberCoinLoading = true;
+        API_Member.updateMemberCoin({
+          memberId: this.memberCoinForm.memberId,
+          coin: this.memberCoinForm.coin,
+          type: this.memberCoinForm.type,
+        })
+          .then((res) => {
+            if (res && res.success) {
+              this.$Message.success("修改成功");
+              this.memberCoinFlag = false;
+              this.getData();
+            } else {
+              this.$Message.error((res && res.message) || "修改失败");
+            }
+          })
+          .finally(() => {
+            this.memberCoinLoading = false;
           });
       });
     },
