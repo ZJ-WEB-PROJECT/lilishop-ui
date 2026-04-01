@@ -353,18 +353,18 @@ export default {
           },
         },
 
-        {
-          title: "平台币数量",
-          align: "left",
-          minWidth: 120,  // 增加宽度
-          render: (h, params) => {
-            return h(
-              "div",
-              {},
-              params.row.coin == void 0 ? "0" : params.row.coin
-            );
-          },
-        },
+        // {
+        //   title: "平台币数量",
+        //   align: "left",
+        //   minWidth: 120,  // 增加宽度
+        //   render: (h, params) => {
+        //     return h(
+        //       "div",
+        //       {},
+        //       params.row.coin == void 0 ? "0" : params.row.coin
+        //     );
+        //   },
+        // },
         {
           title: "积分数量",
           align: "left",
@@ -534,15 +534,15 @@ export default {
                       },
                       "修改积分"
                     ),
-                    h(
-                      "DropdownItem",
-                      {
-                        props: {
-                          name: "updateCoin",
-                        },
-                      },
-                      "修改平台币"
-                    ),
+                    // h(
+                    //   "DropdownItem",
+                    //   {
+                    //     props: {
+                    //       name: "updateCoin",
+                    //     },
+                    //   },
+                    //   "修改平台币"
+                    // ),
                     h(
                       "DropdownItem",
                       {
