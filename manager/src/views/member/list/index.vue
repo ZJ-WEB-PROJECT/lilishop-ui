@@ -112,7 +112,7 @@
     <Modal v-model="walletIncreaseFlag" title="增加余额" width="420">
       <Form ref="walletIncreaseForm" :model="walletIncreaseForm" :rules="walletIncreaseRule" :label-width="90">
         <FormItem label="充值金额" prop="rechargeMoney">
-          <InputNumber v-model="walletIncreaseForm.rechargeMoney" :min="0.01" :precision="2" style="width: 240px" />
+          <InputNumber v-model="walletIncreaseForm.rechargeMoney" :min="0.01" :precision="2" :active-change="false" style="width: 240px" />
         </FormItem>
       </Form>
       <div slot="footer">
