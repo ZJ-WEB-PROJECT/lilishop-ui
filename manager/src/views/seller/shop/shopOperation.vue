@@ -706,6 +706,9 @@ export default {
         if (res.success) {
           this.infoResult = res.result;
           this.shopForm = res.result;
+          if (this.shopForm.legalPhoto && typeof this.shopForm.legalPhoto === 'string') {
+            this.shopForm.legalPhoto = this.shopForm.legalPhoto.split(",");
+          }
           this.shopForm.selfOperated
             ? (this.shopForm.selfOperated = "true")
             : (this.shopForm.selfOperated = "false");
