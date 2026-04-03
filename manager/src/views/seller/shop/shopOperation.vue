@@ -27,6 +27,18 @@
               <FormItem label="试穿员姓名" prop="legalName">
                 <Input v-model="shopForm.legalName" clearable style="width: 200px" />
               </FormItem>
+              <FormItem label="试穿员昵称" prop="storeName">
+                <Input v-model="shopForm.storeName" clearable style="width: 350px" />
+              </FormItem>
+              <FormItem label="身高(cm)" prop="height">
+                <Input v-model="shopForm.height" clearable style="width: 350px" />
+              </FormItem>
+              <FormItem label="体重(斤)" prop="weight">
+                <Input v-model="shopForm.weight" clearable style="width: 350px" />
+              </FormItem>
+              <FormItem label="职业" prop="occupation">
+                <Input v-model="shopForm.occupation" clearable style="width: 350px" />
+              </FormItem>
               <FormItem label="试穿员证件号" prop="legalId">
                 <Input v-model="shopForm.legalId" clearable style="width: 200px" />
               </FormItem>
@@ -56,9 +68,6 @@
                   :src="shopForm.legalPhoto[1]"
                 />
                 <span>点击图片上传身份证正反面，要求身份证清晰，四角无缺漏</span>
-              </FormItem>
-              <FormItem label="店铺名称" prop="storeName">
-                <Input v-model="shopForm.storeName" clearable style="width: 350px" />
               </FormItem>
 
 <!--              <FormItem label="是否自营" prop="selfOperated">-->
@@ -99,7 +108,7 @@
 
 
 
-              <FormItem label="店铺logo" class="storeLogo">
+              <FormItem label="试穿员照片" prop="storeLogo" class="storeLogo">
                 <Avatar
                   style="height: 100px; width: 100px"
                   v-if="shopForm.storeLogo"
@@ -115,7 +124,7 @@
                 </div>
               </FormItem>
 
-              <FormItem label="店铺简介" prop="storeDesc" style="width: 350px">
+              <FormItem label="试穿员简介" prop="storeDesc" style="width: 350px">
                 <Input
                   v-model="shopForm.storeDesc"
                   type="textarea"
@@ -481,10 +490,10 @@ export default {
         // 表单验证规则
         memberName: [{ required: true, message: "会员不能为空" }],
         storeAddressPath: [{ required: true, message: "店铺地址不能为空" }],
-        storeName: [{ required: true, message: "店铺名称不能为空" }],
+        storeName: [{ required: true, message: "试穿员昵称不能为空" }],
         companyAddress: [{ required: true, message: "公司地址不能为空" }],
         storeAddressDetail: [{ required: true, message: "店铺详细地址不能为空" }],
-        storeDesc: [{ required: true, message: "店铺简介不能为空" }],
+        storeDesc: [{ required: true, message: "试穿员简介不能为空" }],
         storeCenter: [{ required: true, message: "店铺未定位" }],
         companyName: [{ required: true, message: "公司名称不能为空" }],
         companyPhone: [{ required: true, message: "公司电话不能为空" }],
@@ -507,7 +516,7 @@ export default {
         ],
         linkName: [{ required: true, message: "联系人姓名不能为空" }],
         linkPhone: [
-          { required: true, message: "联系人手机号不能为空" },
+          { required: true, message: "联系电话不能为空" },
           {
             type: "string",
             pattern: /^1[3|4|5|6|7|8][0-9]{9}$/,
@@ -522,12 +531,17 @@ export default {
         licenseNum: [{ required: true, message: "营业执照号不能为空" }],
         scope: [{ required: true, message: "法定经营范围不能为空" }],
         licencePhoto: [{ required: true, message: "营业执照电子版不能为空" }],
-        legalName: [{ required: true, message: "法人姓名不能为空" }],
-        legalId: [{ required: true, message: "法人证件号不能为空" }],
+        legalName: [{ required: true, message: "试穿员姓名不能为空" }],
+        legalId: [{ required: true, message: "试穿员证件号不能为空" }],
         settlementBankAccountName: [{ required: true, message: "银行开户名不能为空" }],
         settlementBankAccountNum: [{ required: true, message: "银行账号不能为空" }],
         settlementBankBranchName: [{ required: true, message: "银行支行名称不能为空" }],
         settlementBankJointName: [{ required: true, message: "支行联行号不能为空" }],
+        legalPhoto: [{ required: true, message: "证件电子版不能为空" }],
+        storeLogo: [{ required: true, message: "试穿员照片不能为空" }],
+        height: [{ required: true, message: "身高不能为空" }],
+        weight: [{ required: true, message: "体重不能为空" }],
+        occupation: [{ required: true, message: "职业不能为空" }],
 
         salesConsigneeMobile: [
           {
@@ -577,6 +591,9 @@ export default {
         storeLogo: "",
         storeDesc: "",
         ddCode: "",
+        height: "",
+        weight: "",
+        occupation: "",
       },
       categories: [], // 分类
 
@@ -743,6 +760,7 @@ export default {
           //处理经营类目，结算日
           params.goodsManagementCategory = this.checkAllGroup;
           params.settlementCycle = this.settlementCycle;
+
           if (this.shopId) {
             delete params.memberId;
             shopEdit(this.shopId, this.filterFun(params)).then((res) => {
