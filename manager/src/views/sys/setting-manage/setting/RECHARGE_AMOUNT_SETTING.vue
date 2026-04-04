@@ -5,7 +5,7 @@
         <Input v-model="formValidate.name"/>
       </FormItem>
       <FormItem label="金额" prop="price">
-        <Input v-model.number="formValidate.price"/>
+        <Input v-model="formValidate.price"/>
       </FormItem>
       <FormItem label="描述" prop="desc">
         <Input v-model="formValidate.desc"/>
