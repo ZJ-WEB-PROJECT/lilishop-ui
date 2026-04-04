@@ -77,6 +77,11 @@ export default {
           type: "RECHARGE_POPUP_SETTING",
           name: "充值弹窗设置",
         },
+        //E政通设置
+        {
+          type: "EID_SETTING",
+          name: "E政通设置",
+        },
       ],
       authLogin: [
         // 登录设置

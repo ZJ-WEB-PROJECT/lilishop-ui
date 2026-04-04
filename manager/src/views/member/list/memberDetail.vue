@@ -693,7 +693,13 @@
               return h("div", [h("span", {}, "余额退款")]);
             } else if (params.row.serviceType == "WALLET_RECHARGE") {
               return h("div", [h("span", {}, "余额充值")]);
-            } else {
+            } else if (params.row.serviceType == "WALLET_REWARD_GIFT") {
+              return h("div", [h("span", {}, "会员打赏礼物")]);
+            } else if (params.row.serviceType == "WALLET_REWARD_GIFT_RECEIVE") {
+              return h("div", [h("span", {}, "收到会员打赏礼物")]);
+            } else if (params.row.serviceType == "WALLET_SEND_IM") {
+              return h("div", [h("span", {}, "发送IM消息消耗预存款")]);
+            } else if (params.row.serviceType == "WALLET_COMMISSION") {
               return h("div", [h("span", {}, "佣金提成")]);
             }
           },
