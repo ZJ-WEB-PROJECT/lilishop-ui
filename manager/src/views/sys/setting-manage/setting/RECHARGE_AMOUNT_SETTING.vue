@@ -48,7 +48,11 @@ export default {
     },
     // 保存设置
     setupSetting() {
-      setSetting(this.type, this.formValidate).then((res) => {
+      const params = {
+        ...this.formValidate,
+        price: Number(this.formValidate.price)
+      };
+      setSetting(this.type, params).then((res) => {
         if (res.success) {
           this.$Message.success("保存成功!");
         } else {
@@ -60,20 +64,32 @@ export default {
     init() {
       this.result = JSON.parse(this.res);
 
-      Object.keys(this.result).map((item) => {
-        this.result[item] += "";
+      // 修复：只对非数字字段转 String，price 保持数字/空
+      Object.keys(this.result).forEach((item) => {
+        if (item !== "price") {
+          this.result[item] = this.result[item] ? String(this.result[item]) : "";
+        }
       });
 
       this.$set(this, "formValidate", {...this.result});
-      Object.keys(this.formValidate).forEach((item) => {
-        this.ruleValidate[item] = [
+
+      // 给 price 额外加「数字校验」，避免输入非数字
+      this.ruleValidate = {
+        name: [
+          { required: true, message: "请填写必填项", trigger: "blur" }
+        ],
+        price: [
+          { required: true, message: "请填写必填项", trigger: "blur" },
           {
-            required: true,
-            message: "请填写必填项",
-            trigger: "blur",
-          },
-        ];
-      });
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: "请输入正确的金额（最多两位小数）",
+            trigger: "blur"
+          }
+        ],
+        desc: [
+          { required: true, message: "请填写必填项", trigger: "blur" }
+        ]
+      };
     },
   },
 };

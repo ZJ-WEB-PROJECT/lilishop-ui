@@ -283,7 +283,7 @@ export default {
         {
           title: "会员ID",
           key: "id",
-          minWidth: 120,  // 减少宽度
+          minWidth: 180,  // 减少宽度
           tooltip: true,
         },
         {
@@ -320,7 +320,7 @@ export default {
         },
         {
           title: "联系方式",
-          minWidth: 130,
+          minWidth: 120,
           key: "mobile",
           render: (h, params) => {
             if (params.row.mobile == null) {
@@ -328,6 +328,63 @@ export default {
             } else {
               return h("div", [h("span", {}, params.row.mobile)]);
             }
+          },
+        },
+        {
+          title: "用户类型",
+          key: "storeId",
+          tooltip: true,
+          minWidth: 100,  // 减少宽度
+          render: (h, params) => {
+            return h(
+              "div",
+              {},
+              params.row.storeId ? "试穿员" : "普通会员"
+            );
+          },
+        },
+        {
+          title: "邀请码",
+          key: "inviteCode",
+          tooltip: true,
+          minWidth: 140,  // 减少宽度
+        },
+        {
+          title: "上级ID",
+          key: "inviterId",
+          tooltip: true,
+          minWidth: 180,  // 减少宽度
+        },
+        {
+          title: "上级名称",
+          key: "inviterName",
+          tooltip: true,
+          minWidth: 120,  // 减少宽度
+        },
+        {
+          title: "上级邀请码",
+          key: "inviterCode",
+          tooltip: true,
+          minWidth: 140,  // 减少宽度
+        },
+        {
+          title: "VIP",
+          key: "isVip",
+          minWidth: 80,  // 减少宽度
+          render: (h, params) => {
+            return h(
+              "div",
+              {},
+              params.row.isVip === 1 ? "是" : "否"
+            );
+          },
+        },
+        {
+          title: "余额",
+          key: "memberWallet",
+          width: 150,
+          render: (h, params) => {
+            return h("priceColorScheme", {props:{value:params.row.memberWallet}} );
           },
         },
         {
@@ -339,18 +396,6 @@ export default {
           title: "最后登录时间",
           key: "lastLoginDate",
           minWidth: 160,  // 减少宽度
-        },
-        {
-          title: "是否VIP",
-          key: "isVip",
-          minWidth: 160,  // 减少宽度
-          render: (h, params) => {
-            return h(
-              "div",
-              {},
-              params.row.isVip === 1 ? "是" : "否"
-            );
-          },
         },
 
         // {
@@ -365,26 +410,18 @@ export default {
         //     );
         //   },
         // },
-        {
-          title: "积分数量",
-          align: "left",
-          minWidth: 120,  // 增加宽度
-          render: (h, params) => {
-            return h(
-              "div",
-              {},
-              params.row.point == void 0 ? "0" : params.row.point
-            );
-          },
-        },
-        {
-          title: "余额",
-          key: "memberWallet",
-          width: 120,
-          render: (h, params) => {
-            return h("priceColorScheme", {props:{value:params.row.memberWallet}} );
-          },
-        },
+        // {
+        //   title: "积分数量",
+        //   align: "left",
+        //   minWidth: 120,  // 增加宽度
+        //   render: (h, params) => {
+        //     return h(
+        //       "div",
+        //       {},
+        //       params.row.point == void 0 ? "0" : params.row.point
+        //     );
+        //   },
+        // },
         {
           title: "操作",
           key: "action",
