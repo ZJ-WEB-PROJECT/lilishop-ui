@@ -108,7 +108,8 @@
           </TabPane>
         </Tabs>
       </div>
-      <div>
+      <div class="order-list-actions">
+        <Button type="primary" class="mr_10" @click="expressOrderDeliver">批量发货</Button>
         <Button @click="exportOrder" type="info" class="export">导出订单</Button>
       </div>
       <Table
@@ -417,6 +418,9 @@ export default {
     }
   },
   methods: {
+    expressOrderDeliver() {
+      this.$router.push({ path: "/export-order-deliver" });
+    },
     // 初始化数据
     init() {
       this.getDataList();
@@ -532,8 +536,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.order-list-actions {
+  margin: 10px 0;
+}
 .export {
-  margin: 10px 20px 10px 0;
+  margin: 0 20px 0 0;
+}
+.mr_10 {
+  margin-right: 10px;
 }
 .export-excel-wrapper {
   display: inline;
