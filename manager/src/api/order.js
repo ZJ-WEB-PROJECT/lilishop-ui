@@ -3,7 +3,8 @@ import {
   getRequest,
   postRequest,
   putRequest,
-  deleteRequest
+  deleteRequest,
+  postRequestWithNoForm
 } from '@/libs/axios';
 
 
@@ -81,6 +82,16 @@ export const getOrderList = (params) => {
 //  导出订单列表
 export const exportOrder = (params) => {
   return getRequest(`/order/order/queryExportOrder`, params,'blob')
+}
+
+// 下载批量发货导入模板（平台全部物流公司下拉）
+export const downLoadDeliverExcel = (params) => {
+  return getRequest(`/order/order/downLoadDeliverExcel`, params, 'blob')
+}
+
+// 上传 Excel 批量发货
+export const uploadDeliverExcel = (params) => {
+  return postRequestWithNoForm(`/order/order/batchDeliver`, params)
 }
 
 //  订单付款

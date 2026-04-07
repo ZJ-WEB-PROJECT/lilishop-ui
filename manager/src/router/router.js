@@ -123,6 +123,12 @@ export const otherRouter = {
       component: () => import("@/views/order/order/orderList.vue")
     },
     {
+      path: "export-order-deliver",
+      title: "批量发货",
+      name: "export-order-deliver",
+      component: () => import("@/views/order/order/exportOrderDeliver.vue")
+    },
+    {
       path: "order-detail",
       title: "订单详情",
       name: "order-detail",
