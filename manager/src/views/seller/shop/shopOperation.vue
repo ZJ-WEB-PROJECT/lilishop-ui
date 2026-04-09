@@ -16,14 +16,14 @@
             <!-- 遮罩层  -->
             <div v-if="isRead" class="mask">只读不可修改</div>
             <div>
-<!--              <FormItem label="会员名称" prop="memberName">-->
-<!--                <div class="item">-->
-<!--                  <Input disabled v-model="shopForm.memberName" />-->
-<!--                  <Button type="default" @click="selectMember()" v-if="!$route.query.shopId"-->
-<!--                    >选择会员</Button-->
-<!--                  >-->
-<!--                </div>-->
-<!--              </FormItem>-->
+              <FormItem label="会员名称" prop="memberName">
+                <div class="item">
+                  <Input disabled v-model="shopForm.memberName" />
+                  <Button type="default" @click="selectMember()" v-if="!$route.query.shopId"
+                    >选择会员</Button
+                  >
+                </div>
+              </FormItem>
               <FormItem label="试穿员姓名" prop="legalName">
                 <Input v-model="shopForm.legalName" clearable style="width: 200px" />
               </FormItem>
