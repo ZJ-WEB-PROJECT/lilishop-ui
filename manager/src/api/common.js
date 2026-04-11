@@ -30,3 +30,8 @@ export const getBaseSite = () => {
 export const upLoadFile = (bold) =>{
   return uploadFileRequest(uploadFile,bold);
 }
+
+// 获取IM接口前缀
+export function getIMDetail() {
+  return getRequest(`${commonUrl}/common/common/IM`);
+}

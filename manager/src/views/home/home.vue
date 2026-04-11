@@ -4,6 +4,14 @@
     <div class="card">
       <h4>基本信息</h4>
       <div class="count-list flex">
+        <div class="count-item" @click="im()">
+          <div>
+            <Icon class="icon" size="31" type="md-person" />
+          </div>
+          <div>
+            <div>点击登录客服</div>
+          </div>
+        </div>
         <div class="count-item" @click="navigateTo('managerGoods')">
           <div>
             <Icon class="icon" size="31" type="md-photos" />
@@ -200,12 +208,15 @@ import { homeStatistics, hotGoods, hotShops, getNoticePage } from "@/api/index";
 import * as API_Goods from "@/api/goods";
 import { Chart } from "@antv/g2";
 import * as API_Member from "@/api/member";
+import { userInfo } from "@/api/index";
+import { getIMDetail } from "@/api/common";
 
 export default {
   name: "home",
 
   data() {
     return {
+      IMLink: "",
       // 测试数据
       test: {
         a: "test",
@@ -288,6 +299,31 @@ export default {
     };
   },
   methods: {
+    /**
+     * 点击登录im的时候需要去判断一下当前店铺信息是否失效
+     * 失效的话重新请求刷新token保证最新的token去访问im
+     */
+    async im () {
+      // 获取访问Token
+      let accessToken = this.getStore("accessToken");
+      this.load = true
+      await this.getIMDetailMethods();
+      const res = await userInfo();
+      this.load = false
+      if (res.success && this.IMLink) {
+        window.open(`${this.IMLink}?type=admin&token=` + accessToken);
+      }
+      else{
+        this.$Message.error("请登录后再联系客服");
+      }
+    },
+    // 获取im信息
+    async getIMDetailMethods () {
+      let res = await getIMDetail();
+      if (res.success) {
+        this.IMLink = res.result;
+      }
+    },
     // 路由跳转
     navigateTo(name) {
       this.$router.push({

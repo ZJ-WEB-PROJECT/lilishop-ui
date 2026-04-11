@@ -24,6 +24,14 @@
                   >
                 </div>
               </FormItem>
+              <FormItem label="代理人名称" prop="agentName">
+                <div class="item">
+                  <Input disabled v-model="shopForm.agentName" />
+                  <Button type="default" @click="selectAgent()"
+                  >选择代理</Button
+                  >
+                </div>
+              </FormItem>
               <FormItem label="试穿员姓名" prop="legalName">
                 <Input v-model="shopForm.legalName" clearable style="width: 200px" />
               </FormItem>
@@ -428,6 +436,15 @@
       />
     </Modal>
 
+    <!-- 代理选择窗口 -->
+    <Modal width="1200px" v-model="agentModalFlag">
+      <agentLayout
+        @callback="callbackAgent"
+        class="selectedAgent"
+        ref="agentLayout"
+      />
+    </Modal>
+
     <Modal v-model="auditModel" width="360">
       <p slot="header" style="color: #f60; text-align: center">
         <Icon type="ios-information-circle"></Icon>
@@ -452,6 +469,7 @@
 
 <script>
 import memberLayout from "@/views/member/list/index";
+import agentLayout from "@/views/sys/user-manage/userManage.vue";
 import ossManage from "@/views/sys/oss-manage/ossManage";
 import { getCategoryTree } from "@/api/goods";
 import { shopDetail, shopAdd, shopEdit, getShopByMemberId, shopAudit } from "@/api/shops";
@@ -464,6 +482,7 @@ export default {
     uploadPicInput,
     ossManage,
     memberLayout,
+    agentLayout,
     multipleMap,
   },
 
@@ -478,6 +497,7 @@ export default {
       picModelFlag: false, // 图片选择器
       address: "", // 地址
       returnAddress: "", // 退货地址
+      agentModalFlag: false, // 商家账号
       memberModalFlag: false, // 商家账号
       settlementShow: false, // 是否展示结算日输入框
       addSettlementConfirmBtn: false, // 添加结算日确认按钮
@@ -531,6 +551,7 @@ export default {
         licenseNum: [{ required: true, message: "营业执照号不能为空" }],
         scope: [{ required: true, message: "法定经营范围不能为空" }],
         licencePhoto: [{ required: true, message: "营业执照电子版不能为空" }],
+        agentName: [{ required: true, message: "代理人姓名不能为空" }],
         legalName: [{ required: true, message: "试穿员姓名不能为空" }],
         legalId: [{ required: true, message: "试穿员证件号不能为空" }],
         settlementBankAccountName: [{ required: true, message: "银行开户名不能为空" }],
@@ -564,6 +585,8 @@ export default {
         settlementCycle: "",
         selfOperated: "false",
         memberName: "",
+        agentId: "",
+        agentName: "",
         companyName: "",
         addressPath: "",
         addressIdPath: "",
@@ -626,11 +649,24 @@ export default {
         });
       }
     },
+    // 选择代理人的回调
+    callbackAgent(val) {
+      if (val) {
+        this.shopForm.agentId = val.id;
+        this.shopForm.agentName = val.nickName;
+      }
+    },
 
     //选择会员
     selectMember() {
       this.$refs["memberLayout"].selectedMember = true;
       this.memberModalFlag = true;
+    },
+
+    //选择代理
+    selectAgent() {
+      this.$refs["agentLayout"].selectedAgent = true;
+      this.agentModalFlag = true;
     },
 
     //修改地址

@@ -125,6 +125,20 @@ export default {
     departmentTreeChoose,
     uploadPicInput,
   },
+  props: {
+    // 是否为选中模式
+    selectedAgent: {
+      type: Boolean,
+      default: false,
+    },
+    // 已选择用户数据
+    selectedList: {
+      type: null,
+      default: () => {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       loading: true, // 加载状态
@@ -180,6 +194,13 @@ export default {
         {
           title: "用户名",
           key: "username",
+          minWidth: 120,
+          sortable: true,
+          fixed: "left"
+        },
+        {
+          title: "昵称",
+          key: "nickName",
           minWidth: 120,
           sortable: true,
           fixed: "left"
@@ -263,6 +284,36 @@ export default {
           align: "center",
           fixed: "right",
           render: (h, params) => {
+            if (this.selectedAgent) {
+              return h(
+                "div",
+                {
+                  style: {
+                    display: "flex",
+                    justifyContent: "center",
+                  },
+                },
+                [
+                  h(
+                    "a",
+                    {
+                      style: {
+                        color: "#2d8cf0",
+                        cursor: "pointer",
+                        textDecoration: "none",
+                      },
+                      on: {
+                        click: () => {
+                          this.callback(params.row, params.index);
+                        },
+                      },
+                    },
+                    params.row.___selected ? "已选择" : "选择"
+                  ),
+                ]
+              );
+            }
+
             let enableOrDisable = "";
             if (params.row.status == true) {
               enableOrDisable = h(
@@ -352,9 +403,34 @@ export default {
       ],
       data: [], // 用户数据
       total: 0, // 总数
+      selectAgent: [], //保存选中的用户
     };
   },
   methods: {
+    // 回调给父级
+    callback(val, index) {
+      this.selectAgent.forEach(item=>{item.___selected = false})
+      this.$set(val, "___selected", !val.___selected);
+      console.log(val.___selected);
+      console.log(this.selectMember);
+      let findUser = this.selectAgent.find((item) => {
+        return item.id == val.id;
+      });
+      this.selectAgent = [];
+      // 如果没有则添加
+      if (!findUser) {
+        this.selectAgent.push(val);
+      } else {
+        // 有重复数据就删除
+        this.selectAgent.map((item, index) => {
+          if (item.id == findUser.id) {
+            this.selectAgent.splice(index, 1);
+          }
+        });
+      }
+
+      this.$emit("callback", val);
+    },
     // 初始化数据
     init() {
       this.getUserList();

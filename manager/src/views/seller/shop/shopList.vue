@@ -1,12 +1,21 @@
 <template>
   <div class="search">
     <Card>
-      <Form ref="searchForm" :model="searchForm" inline :label-width="70" class="search-form">
+      <Form ref="searchForm" :model="searchForm" inline :label-width="80" class="search-form">
         <Form-item label="会员名称" prop="memberName">
           <Input
             type="text"
             v-model="searchForm.memberName"
             placeholder="请输入会员名称"
+            clearable
+            style="width: 240px"
+          />
+        </Form-item>
+        <Form-item label="代理人名称" prop="agentName">
+          <Input
+            type="text"
+            v-model="searchForm.agentName"
+            placeholder="请输入代理人名称"
             clearable
             style="width: 240px"
           />
@@ -85,43 +94,79 @@ export default {
           tooltip: true
         },
         {
+          title: "姓名",
+          key: "legalName",
+          minWidth: 60,
+          tooltip: true
+        },
+        {
           title: "会员名称",
           key: "memberName",
           minWidth: 130,
           tooltip: true
         },
         {
-          title: "店铺地址",
-          key: "storeAddressPath",
-          width: 300,
-          tooltip: true,
-          render: (h, params) => {
-            return h(
-              "Tag",
-              {
-
-              },
-              params.row.storeAddressPath ||  "暂未填写"
-            );
-          },
+          title: "职业",
+          key: "occupation",
+          minWidth: 60,
+          tooltip: true
         },
         {
-          title: "是否自营",
-          key: "selfOperated",
-          align: "left",
-          width: 120,
-          render: (h, params) => {
-            return h(
-              "Tag",
-              {
-                props: {
-                  color: params.row.selfOperated ? "volcano" : "green",
-                },
-              },
-              params.row.selfOperated  ? "自营" : "非自营"
-            );
-          },
+          title: "身高(cm)",
+          key: "height",
+          minWidth: 60,
+          tooltip: true
         },
+        {
+          title: "体重(斤)",
+          key: "weight",
+          minWidth: 50,
+          tooltip: true
+        },
+        // {
+        //   title: "店铺地址",
+        //   key: "storeAddressPath",
+        //   width: 300,
+        //   tooltip: true,
+        //   render: (h, params) => {
+        //     return h(
+        //       "Tag",
+        //       {
+        //
+        //       },
+        //       params.row.storeAddressPath ||  "暂未填写"
+        //     );
+        //   },
+        // },
+        {
+          title: "代理人ID",
+          key: "agentId",
+          minWidth: 150,
+          tooltip: true
+        },
+        {
+          title: "代理人名称",
+          key: "agentName",
+          minWidth: 80,
+          tooltip: true
+        },
+        // {
+        //   title: "是否自营",
+        //   key: "selfOperated",
+        //   align: "left",
+        //   width: 120,
+        //   render: (h, params) => {
+        //     return h(
+        //       "Tag",
+        //       {
+        //         props: {
+        //           color: params.row.selfOperated ? "volcano" : "green",
+        //         },
+        //       },
+        //       params.row.selfOperated  ? "自营" : "非自营"
+        //     );
+        //   },
+        // },
 
         {
           title: "店铺状态",
