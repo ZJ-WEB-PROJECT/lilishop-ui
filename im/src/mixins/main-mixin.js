@@ -1,8 +1,9 @@
 import SocketInstance from "@/im-server/socket-instance";
-import { ServeGetUserSetting,ServeGetStoreSetting } from "@/api/user";
+import { ServeGetUserSetting,ServeGetStoreSetting,ServeGetAdminSetting } from "@/api/user";
 import store from "@/store";
-import { ServeGetTalkList,ServeGetStoreTalkList } from "@/api/chat";
+import { ServeGetTalkList,ServeGetStoreTalkList,ServeGetAllStoreTalkList } from "@/api/chat";
 import { formatTalkItem } from "@/utils/talk";
+import {getTalkInfo, setTalkInfo} from "@/utils/auth";
 export default {
   
   created() {
@@ -17,9 +18,31 @@ export default {
 
     // 加载用户相关设置信息，更新本地缓存
     loadUserSetting() {
+      if (this.$route.query.type === "admin") {
+        ServeGetAdminSetting().then(async ({ code, result }) => {
+          if (code === 200) {
+            store.commit("UPDATE_USER_INFO", {
+              id: result.id,
+              face: result.avatar,
+              name: result.nickName,
+              type: "admin",
+            });
+            const talkInfo = getTalkInfo() || {};
+            talkInfo.type = this.$route.query.type;
+            setTalkInfo(talkInfo);
+            //获取店铺聊天列表
+            await this.loadAllStoreChatList()
+          }else if (code === 200 && !result) {
+            setTimeout(() => {
+              this.loadUserSetting();
+            }, 2000);
+          }
+        });
+      }
+
       //标识没有值,获取用户信息
 
-      if(this.$route.query.id){
+      else if(this.$route.query.id){
         ServeGetUserSetting().then(async ({ code, result }) => {
           // 如果result有值说明用户创建成功
           if (result) {
@@ -117,6 +140,34 @@ export default {
       });
     },
 
+    //获取所有商家聊天记录
+    loadAllStoreChatList() {
+      this.loadStatus = this.talkNum == 0 ? 0 : 1;
+      ServeGetAllStoreTalkList().then(({ code, result }) => {
+        if (code !== 200) return false;
+        this.$store.commit("SET_UNREAD_NUM", 0);
+        this.$store.commit("SET_TALK_ITEMS", {
+          items: result.map((item) => formatTalkItem(item)),
+        });
+
+        // 判断
+        if (this.$route.query.id) {
+          let takeData, takeIndex;
+          console.log(result)
+          result.forEach((take, index) => {
+            if (take.id == this.$route.query.id) {
+              takeData = take;
+              takeIndex = index;
+            }
+          });
+          this.$nextTick(() =>
+              this.clickTab(this.$route.query.id, takeData, takeIndex)
+          );
+        }
+      }).finally(() => {
+        this.loadStatus = 1;
+      });
+    },
 
     reload() {
       this.$root.$children[0].refreshView();

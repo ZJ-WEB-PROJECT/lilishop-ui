@@ -8,6 +8,7 @@ import { formatTalkItem, findTalkIndex, toTalk } from "@/utils/talk";
 import { parseTime } from "@/utils/functions";
 
 import mixin from '@/mixins/main-mixin'
+import {getTalkInfo, getUserInfo} from "@/utils/auth";
 /**
  * 好友状态事件
  */
@@ -87,7 +88,10 @@ class Talk extends Base {
     let userId = this.resource.fromUser;
 
     if (userId == 0) return "center";
-
+    const talkInfo = getTalkInfo();
+    if (talkInfo.type === "admin") {
+      return userId == talkInfo.storeId ? "right" : "left";
+    }
     return userId == this.getAccountId() ? "right" : "left";
   }
 

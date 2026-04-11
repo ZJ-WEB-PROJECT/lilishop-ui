@@ -84,7 +84,23 @@
                       <div class="title">
                         <div class="card-name">
                           <p class="nickname">
-                            {{ item.remark_name ? item.remark_name : item.name }}
+                            <!-- 管理员模式：只处理最后一段，不拆结构 -->
+                            <template v-if="$route.query.type === 'admin'">
+                              <span>{{ item.name.substring(0, item.name.lastIndexOf('-') + 1) }}</span>
+                              <span style="font-weight: bold; color: #ff0000;">
+                                {{
+                                  item.name.substring(item.name.lastIndexOf('-') + 1, item.name.length-1).trim() === 'null'
+                                      ? '暂无代理'
+                                      : item.name.substring(item.name.lastIndexOf('-') + 1, item.name.length-1).trim()
+                                }}
+                              </span>
+                              <span>)</span>
+                            </template>
+
+                            <!-- 普通模式：直接显示，不做任何处理 -->
+                            <span v-else>
+                              {{ item.remark_name ? item.remark_name : item.name }}
+                            </span>
                           </p>
                           <div v-show="item.unread" class="larkc-tag">
                             {{ item.unread }}条未读
@@ -427,7 +443,8 @@ export default {
         nickname,
         is_robot: item.is_robot,
         talkId: item.id, //聊天对话的id
-        clickFlag: true
+        clickFlag: true,
+        type: this.$route.query.type || "",
       };
 
       // 更新信息

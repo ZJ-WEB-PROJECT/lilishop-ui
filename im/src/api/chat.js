@@ -10,6 +10,11 @@ export const ServeGetStoreTalkList = (data) => {
   return get("/im/talk/store/list", data);
 };
 
+// 获取所有商家聊天列表服务接口
+export const ServeGetAllStoreTalkList = (data) => {
+  return get("/im/talk/store/all/list", data);
+};
+
 // 聊天列表创建服务接口
 export const ServeCreateTalkList = (id) => {
   return get(`/im/talk/user/${id}`);

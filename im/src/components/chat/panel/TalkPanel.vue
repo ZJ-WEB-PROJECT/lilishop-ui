@@ -206,6 +206,7 @@ import SocketInstance from "@/im-server/socket-instance";
 import { SvgMentionDown } from "@/core/icons";
 import { formatTime, parseTime, copyTextToClipboard } from "@/utils/functions";
 import { unitPrice } from '@/plugins/filters';
+import { setTalkInfo, getTalkInfo } from "@/utils/auth";
 
 import {
   ServeTalkRecords,
@@ -213,6 +214,7 @@ import {
   ServeRemoveRecords,
   ServeRevokeRecords,
 } from "@/api/chat";
+import {ServeGetAdminStoreSetting} from "@/api/user";
 
 export default {
   name: "TalkEditorPanel",
@@ -499,7 +501,7 @@ export default {
 
 
     // 加载用户聊天详情信息
-    loadChatRecords () {
+    async loadChatRecords () {
       if (this.loadRecord.pageNumber === 0 || this.params.clickFlag) {
         this.loadRecord.pageNumber = 1
         this.params.clickFlag = false
@@ -514,6 +516,20 @@ export default {
       };
       this.loadRecord.status = 0;
 
+      let storeId;
+      if (this.$route.query.type === "admin") {
+        const params = {
+          talkId: this.params.talkId,
+        };
+        const res = await ServeGetAdminStoreSetting(params);
+        if(res.code === 200) {
+          const talkInfo = getTalkInfo();
+          talkInfo.storeId = res.result.id;
+          storeId = res.result.id;
+          setTalkInfo(talkInfo);
+        }
+      }
+
       let el = document.getElementById('lumenChatPanel')
       let scrollHeight = el.scrollHeight
       ServeTalkRecords(data).then((res) => {
@@ -523,15 +539,19 @@ export default {
           let key = new Date().getTime();
           item.float = "center";
           if (item.toUser > 0) {
-            item.float = item.fromUser == user_id ? "right" : "left";
+            if (this.$route.query.type === "admin") {
+              item.float = item.fromUser === storeId ? "right" : "left";
+            }else{
+              item.float = item.fromUser === user_id ? "right" : "left";
+            }
           }
-          if (item.messageType == 'GOODS') {
+          if (item.messageType === 'GOODS') {
             item.text = JSON.parse(item.text)
           }
           // if (item.messageType == 'MESSAGE"') {
           //   item.text = this.textReplaceEmoji(item.text)
           // }
-          if (item.messageType == 'ORDER') {
+          if (item.messageType === 'ORDER') {
             item.text = JSON.parse(item.text)
           }
           return { ...item, [key]: key };
@@ -542,7 +562,7 @@ export default {
           : (this.loadRecord.status = 2);
         this.$nextTick(() => {
           // if (data.record_id == 0 || !data.record_id) {
-          if (data.record_id == 0 || data.pageNumber == 1) {
+          if (data.record_id === 0 || data.pageNumber === 1) {
             el.scrollTop = el.scrollHeight
           } else {
             el.scrollTop = el.scrollHeight - scrollHeight

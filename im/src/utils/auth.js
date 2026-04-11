@@ -3,6 +3,7 @@ import JsBase64 from 'js-base64'
 const USER_TOKEN = 'LILI-TOKEN'
 const USER_INFO = 'LILI-USERINFO'
 const USER_SETTING = 'LILI-SETTING'
+const TALK_INFO = 'LILI-TALKINFO'
 
 /**
  * 设置用户授权token
@@ -37,6 +38,23 @@ export function setUserInfo (data) {
  */
 export function getUserInfo () {
   const data = JsBase64.Base64.decode(localStorage.getItem(USER_INFO) || '')
+  return data ? JSON.parse(data) : {}
+}
+
+/**
+ * 设置聊天信息
+ *
+ * @param {Object} data
+ */
+export function setTalkInfo (data) {
+  localStorage.setItem(TALK_INFO, JsBase64.Base64.encode(JSON.stringify(data)))
+}
+
+/**
+ * 获取聊天信息
+ */
+export function getTalkInfo () {
+  const data = JsBase64.Base64.decode(localStorage.getItem(TALK_INFO) || '')
   return data ? JSON.parse(data) : {}
 }
 

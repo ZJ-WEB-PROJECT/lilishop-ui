@@ -18,7 +18,7 @@
 
 <script>
 import { Tabs, TabPane } from 'element-ui'
-import { ServeGetStoreDetail, ServeGetUserDetail, ServeGetFootPrint, ServeGetOrderPrint, ServeGetGoodsDetail, ServeStoreGetFootPrint,ServeStoreGetOrderPrint } from '@/api/user'
+import { ServeGetStoreDetail, ServeGetUserDetail, ServeGetFootPrint, ServeGetOrderPrint, ServeGetGoodsDetail, ServeStoreGetFootPrint,ServeStoreGetOrderPrint,ServeAdminGetFootPrint,ServeAdminGetOrderPrint } from '@/api/user'
 import StoreDetail from "@/components/chat/panel/template/storeDetail.vue";
 import FootPrint from "@/components/chat/panel/template/footPrint.vue";
 import GoodsLink from "@/components/chat/panel/template/goodsLink.vue";
@@ -140,7 +140,36 @@ export default {
       })
     },
     getFootPrint() {
-      if (this.toUser.storeFlag) {
+      if (this.$route.query.type === "admin") {
+        this.footPrintParams.memberId = this.toUser.userId
+        this.footPrintParams.storeId = this.id
+        ServeAdminGetFootPrint(this.footPrintParams).then(res => {
+          res.result.records=res.result.records.filter((item)=>{
+            return item!=null
+          })
+          res.result.records.forEach((item, index) => {
+            if (localStorage.getItem(item.goodsId)) {
+              item.btnHide = 0
+            } else {
+              item.btnHide = 1
+            }
+            if (item.goodsId === this.goodsParams.goodsId) {
+              res.result.records.splice(index, 1)
+            }
+          });
+          this.footPrintList.push(...res.result.records)
+        })
+        ServeAdminGetOrderPrint(this.footPrintParams).then((res) => {
+          if (res.code == 200) {
+            res.result.records.forEach((item) => {
+              this.orderPrintList.push({
+                ...item,
+                btnHide: 1
+              })
+            })
+          }
+        })
+      }else if (this.toUser.storeFlag) {
         this.footPrintParams.memberId = this.id
         this.footPrintParams.storeId = this.toUser.userId
         ServeGetFootPrint(this.footPrintParams).then(res => {
