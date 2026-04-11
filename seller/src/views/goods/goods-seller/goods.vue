@@ -76,7 +76,8 @@
       </div>
 
       <Row class="operation padding-row">
-        <Button @click="addGoods" type="info">{{ isTemplateStore ? '添加商品' : '引用模板商品' }}</Button>
+        <Button @click="addGoods('NORMAL')" type="info">添加商品</Button>
+        <Button @click="addGoods('TEMPLATE')" type="info">引用模板商品</Button>
         <Button @click="openTemplateGoodsModal">从模板复制</Button>
         <Button v-if="isTemplateStore" @click="openImportGoods" >导入商品</Button>
         <Button @click="uppers" >批量上架</Button>
@@ -108,7 +109,7 @@
               <div class="div-zoom">
                 <a @click="linkTo(row.id, row.skuId)">{{ row.goodsName }}</a>
               </div>
-              
+
             </div>
           </div>
         </template>
@@ -144,7 +145,7 @@
             border
           ></Table>
         </TabPane>
-        
+
       </Tabs>
 
       <div slot="footer">
@@ -715,12 +716,14 @@ export default {
       });
     },
     // 添加商品
-    addGoods() {
-      if (!this.isTemplateStore) {
+    addGoods(type) {
+      if (type === 'NORMAL') {
+        // 手工发布
+        this.$router.push({ name: "goods-operation" });
+      } else {
+        // 引用模板
         this.openTemplateGoodsModal();
-        return;
       }
-      this.$router.push({ name: "goods-operation" });
     },
     // 编辑商品
     editGoods(v) {
@@ -1079,13 +1082,13 @@ export default {
         this.searchForm.goodsStatus = item;
       }
       this.currentStatus = item;
-      
+
       // tab切换时清除选中内容
       this.selectedRows = [];
       if (this.$refs.table) {
         this.$refs.table.selectAll(false);
       }
-      
+
       this.getDataList();
     },
   },
