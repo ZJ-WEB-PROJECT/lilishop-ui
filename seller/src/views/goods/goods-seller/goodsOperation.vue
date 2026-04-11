@@ -13,8 +13,8 @@
     <second-step ref='second' :firstData="firstData" v-if="activestep === 1"></second-step>
     <!-- 第三步 发布完成 -->
     <third-step ref='third' v-if="activestep === 2"></third-step>
-    
-    
+
+
   </div>
 </template>
 <script>
@@ -62,11 +62,11 @@ export default {
   },
   mounted() {
     // 非模板店铺不允许走手工发布，统一引导到模板复制流程
-    if (!this.isTemplateStore() && this.$route.name === "goods-operation" && !this.$route.query.id && !this.$route.query.draftId && !this.$route.query.copyId) {
-      this.$Message.warning("当前店铺仅支持从模板商品库引用商品");
-      this.$router.replace({ name: "goods", query: { openTemplate: "1" } });
-      return;
-    }
+    // if (!this.isTemplateStore() && this.$route.name === "goods-operation" && !this.$route.query.id && !this.$route.query.draftId && !this.$route.query.copyId) {
+    //   this.$Message.warning("当前店铺仅支持从模板商品库引用商品");
+    //   this.$router.replace({ name: "goods", query: { openTemplate: "1" } });
+    //   return;
+    // }
     // 编辑商品、模板、复制商品
     if (this.$route.query.id || this.$route.query.draftId || this.$route.query.copyId) {
       this.activestep = 1;
@@ -74,7 +74,7 @@ export default {
       this.activestep = 0
       this.$refs.first.selectGoodsType = true;
     }
-    
+
   }
 };
 </script>
